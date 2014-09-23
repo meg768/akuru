@@ -5,7 +5,7 @@ app.set('port', (process.env.PORT || 5000))
 app.use(express.static(__dirname + '/public'))
 
 app.get('/', function(request, response) {
-  response.json({message:'Hello World!'});
+  response.json({message:'Hello World!' , postgres:process.env.DATABASE_URL});
 })
 
 app.listen(app.get('port'), function() {
