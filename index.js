@@ -17,12 +17,12 @@ app.use(express.static(__dirname + '/public'))
 
 app.get('/', function(request, response) {
   response.json({message:'Hello World!' , postgres:process.env.DATABASE_URL, port:process.env.PORT});
+
 })
 
 app.listen(app.get('port'), function() {
   console.log("Node app is running at localhost:" + app.get('port'))
 })
-
 
 var Pusher = require('pusher');
 
@@ -38,12 +38,11 @@ var pusher = new Pusher({
 
 });
 
+//pusher.trigger('test_channel', 'my_event', { message: "hello world" });
+
 var pg = require('pg');
 
 app.get('/db', function (request, response) {
-
-//pusher.trigger('test_channel', 'my_event', { message: "hello world" });
-
   pg.connect(process.env.DATABASE_URL, function(err, client, done) {
     client.query('SELECT * FROM test_table', function(err, result) {
       done();
