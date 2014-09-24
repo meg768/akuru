@@ -27,9 +27,9 @@ app.listen(app.get('port'), function() {
 var Pusher = require('pusher');
 
 var pusher = new Pusher({
-  appId: '90278',
-  key: 'bb47773b315bd7352c6b',
-  secret: '80e94870d0ed7c51a967'
+  appId: '90574',
+  key: '062bc67be8d42e4ded9b',
+  secret: '4f7560f8aa5001483c7f'
 /*
   encrypted: ENCRYPTED, // optional, defaults to false
   host: 'HOST', // optional, defaults to api.pusherapp.com
