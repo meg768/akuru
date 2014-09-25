@@ -25,6 +25,11 @@ wss.on("connection", function(ws) {
 	    console.log('received: %s', message);
 		ws.send("echo ");
 		ws.send(message);
+		
+		if (message == 'db') {
+			ws.send(db());
+			
+		}
 	});
 
   ws.on("close", function() {
@@ -33,6 +38,23 @@ wss.on("connection", function(ws) {
   })
 })
 
+
+function db() {
+	var pg = require('pg');
+
+	pg.connect(process.env.DATABASE_URL, function(err, client, done) {
+		client.query('SELECT * FROM test_table', function(err, result) {
+	
+			done();
+			if (err)
+				{ return "NOT OK"; }
+			else
+				{ return "OK"; } //response.send(result.rows); }
+		});
+	});
+	
+}
+/*
 
 app.get('/', function(request, response) {
   response.json({message:'Hello World!' , postgres:process.env.DATABASE_URL, port:process.env.PORT});
@@ -43,23 +65,10 @@ app.listen(app.get('port'), function() {
   console.log("Node app is running at localhost:" + app.get('port'))
 })
 
-var pg = require('pg');
 
 app.get('/db', function (request, response) {
-
-  pg.connect(process.env.DATABASE_URL, function(err, client, done) {
-    client.query('SELECT * FROM test_table', function(err, result) {
-	pusher.trigger('test_channel', 'my_event', { message: "hello world" });
-
-      done();
-      if (err)
-       { console.error(err); response.send("Error " + err); }
-      else
-       { response.send(result.rows); }
-    });
-  });
 })
-
+*/
 
 
 /*
