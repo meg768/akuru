@@ -1,3 +1,34 @@
+var WebSocketServer = require("ws").Server
+var http = require("http")
+var express = require("express")
+var app = express()
+var port = process.env.PORT || 5000
+
+app.use(express.static(__dirname + "/"))
+
+var server = http.createServer(app)
+server.listen(port)
+
+console.log("http server listening on %d", port)
+
+var wss = new WebSocketServer({server: server})
+console.log("websocket server created")
+
+wss.on("connection", function(ws) {
+  var id = setInterval(function() {
+    ws.send(JSON.stringify(new Date()), function() {  })
+  }, 1000)
+
+  console.log("websocket connection open")
+
+  ws.on("close", function() {
+    console.log("websocket connection close")
+    clearInterval(id)
+  })
+})
+
+
+
 /*
 
 url: postgres://zmqeszuvhwmooa:ov0vcsWLVsLQczUE4JdiwymI9N@ec2-54-225-156-230.compute-1.amazonaws.com:5432/ddidqfrm0e850n
@@ -7,6 +38,8 @@ user: zmqeszuvhwmooa
 port: 5432
 password: ov0vcsWLVsLQczUE4JdiwymI9N
 */
+
+/*
 
 var WebSocketServer = require("ws").Server
 var http = require("http")
@@ -55,7 +88,7 @@ wss.on("connection", function(ws) {
 })
 
 
-/*
+
 var Pusher = require('pusher');
 
 var pusher = new Pusher({
@@ -69,7 +102,6 @@ var pusher = new Pusher({
 
 
 });
-*/
 
 var pg = require('pg');
 
@@ -87,4 +119,6 @@ app.get('/db', function (request, response) {
     });
   });
 })
+
+*/
 
