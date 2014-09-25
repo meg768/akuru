@@ -43,6 +43,8 @@ wss.on("connection", function(ws) {
 
 
 function db(ws) {
+	console.log("getting ps");
+	pg = require("pg");
 	console.log("connecting to %s", process.env.DATABASE_URL);
 
 	pg.connect(process.env.DATABASE_URL, function(err, client, done) {
