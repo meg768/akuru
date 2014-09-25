@@ -26,7 +26,7 @@ wss.on("connection", function(ws) {
 		ws.send("echo ");
 		
 		if (message == 'db') {
-			ws.send(db());
+			db(ws);
 			
 		}
 		else
@@ -41,24 +41,25 @@ wss.on("connection", function(ws) {
 })
 
 
-function db() {
-	var pg = require('pg');
-    console.log("required pg, connecting...")
+
+function db(ws) {
+	console.log("connecting to %s", process.env.DATABASE_URL);
 
 	pg.connect(process.env.DATABASE_URL, function(err, client, done) {
-	    console.log("connected to ps")
+		console.log("quering...");
 		client.query('SELECT * FROM test_table', function(err, result) {
-	
+			console.log("YES!");
+
 			done();
 			if (err)
-				{ return "NOT OK"; }
+				{ console.error(err); ws.send(err); }
 			else
-				{ return "OK"; } //response.send(result.rows); }
+				{ ws.send("OK!!!!"); }
 		});
 	});
 
-	return "Upps";	
-}
+};
+
 /*
 
 app.get('/', function(request, response) {
