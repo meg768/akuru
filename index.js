@@ -27,7 +27,8 @@ wss.on('connection', function(ws) {
         console.log('received: %s', message);
 		ws.send('message echo');
     });
-    ws.send('something');
+	console.log('Connection was made...');
+   // ws.send('something');
 });
 
 console.log('Starting WebSockets, OK');
