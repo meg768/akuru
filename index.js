@@ -8,30 +8,14 @@ port: 5432
 password: ov0vcsWLVsLQczUE4JdiwymI9N
 */
 
-
+var WebSocketServer = require("ws").Server
+var http = require("http")
 var express = require('express')
 var app = express();
 
 
 
 
-
-console.log('Starting WebSockets');
-
-var WebSocketServer = require('ws').Server;
-var wss = new WebSocketServer({port: 8080});
-
-
-wss.on('connection', function(ws) {
-    ws.on('message', function(message) {
-        console.log('received: %s', message);
-		ws.send('message echo');
-    });
-	console.log('Connection was made...');
-   // ws.send('something');
-});
-
-console.log('Starting WebSockets, OK');
 
 
 app.set('port', (process.env.PORT || 8000))
@@ -46,20 +30,46 @@ app.listen(app.get('port'), function() {
   console.log("Node app is running at localhost:" + app.get('port'))
 })
 
+
+
+
+var server = http.createServer(app);
+server.listen(8080);
+
+console.log("http server listening on %d", 8080)
+
+var wss = new WebSocketServer({server: server})
+console.log("websocket server created")
+
+wss.on("connection", function(ws) {
+  var id = setInterval(function() {
+    ws.send(JSON.stringify(new Date()), function() {  })
+  }, 1000)
+
+  console.log("websocket connection open")
+
+  ws.on("close", function() {
+    console.log("websocket connection close")
+    clearInterval(id)
+  })
+})
+
+
+/*
 var Pusher = require('pusher');
 
 var pusher = new Pusher({
   appId: '90574',
   key: '062bc67be8d42e4ded9b',
   secret: '4f7560f8aa5001483c7f'
-/*
+
   encrypted: ENCRYPTED, // optional, defaults to false
   host: 'HOST', // optional, defaults to api.pusherapp.com
   port: PORT, // optional, defaults to 80 for unencrypted and 443 for encrypted
-*/
+
 
 });
-
+*/
 
 var pg = require('pg');
 
