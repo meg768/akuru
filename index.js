@@ -21,11 +21,28 @@ wss.on("connection", function(ws) {
 
   console.log("websocket connection open")
 
+	ws.on('message', function(message) {
+	    console.log('received: %s', message);
+		ws.send("echo ");
+		ws.send(message);
+	});
+
   ws.on("close", function() {
     console.log("websocket connection close")
     clearInterval(id)
   })
 })
+
+
+app.get('/', function(request, response) {
+  response.json({message:'Hello World!' , postgres:process.env.DATABASE_URL, port:process.env.PORT});
+
+})
+
+app.listen(app.get('port'), function() {
+  console.log("Node app is running at localhost:" + app.get('port'))
+})
+
 
 
 
