@@ -1,15 +1,3 @@
-var express = require('express')
-var app = express();
-
-
-
-
-
-
-
-
-
-
 /*
 
 url: postgres://zmqeszuvhwmooa:ov0vcsWLVsLQczUE4JdiwymI9N@ec2-54-225-156-230.compute-1.amazonaws.com:5432/ddidqfrm0e850n
@@ -19,6 +7,27 @@ user: zmqeszuvhwmooa
 port: 5432
 password: ov0vcsWLVsLQczUE4JdiwymI9N
 */
+
+
+var express = require('express')
+var app = express();
+
+
+
+
+
+
+var WebSocketServer = require('ws').Server;
+var wss = new WebSocketServer({port: 8080});
+
+wss.on('connection', function(ws) {
+    ws.on('message', function(message) {
+        console.log('received: %s', message);
+		ws.send('message echo');
+    });
+    ws.send('something');
+});
+
 
 
 app.set('port', (process.env.PORT || 8000))
