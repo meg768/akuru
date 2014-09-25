@@ -16,9 +16,11 @@ var app = express();
 
 
 
+console.log('Starting WebSockets');
 
 var WebSocketServer = require('ws').Server;
 var wss = new WebSocketServer({port: 8080});
+
 
 wss.on('connection', function(ws) {
     ws.on('message', function(message) {
@@ -28,6 +30,7 @@ wss.on('connection', function(ws) {
     ws.send('something');
 });
 
+console.log('Starting WebSockets, OK');
 
 
 app.set('port', (process.env.PORT || 8000))
