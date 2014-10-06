@@ -40,7 +40,7 @@ var job = schedule.scheduleJob(rule, function() {
 	var text = {};
 	var now = Date();
 
-	text.message = "5 minutes has passed since last time...";
+	text.message = "  5 minutes has passed since last time...    ";
 	text.color = "blue";
 	text.command = "text";
 	
