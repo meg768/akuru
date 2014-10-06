@@ -3,54 +3,122 @@ var express = require("express");
 var app = express();
 var port = process.env.PORT || 5000;
 var bodyParser = require('body-parser');
-
-
 var Pusher = require('pusher');
 
+var schedule = require('node-schedule');
+
+
+
+
+
+// ??
+app.use(express.static(__dirname + "/"))
+
+
+
 console.log("Initiating pusher...");
-var pusher = new Pusher({
-  appId: '90574',
-  key: '062bc67be8d42e4ded9b',
-  secret: '4f7560f8aa5001483c7f'
+
+var pusher = new Pusher({ 
+	appId: '90574',
+	key: '062bc67be8d42e4ded9b',
+	secret: '4f7560f8aa5001483c7f'
 });
 
 
-app.use( bodyParser.json() );       // to support JSON-encoded bodies
+app.use( bodyParser.json() );
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(express.static(__dirname + "/"))
 
-var server = http.createServer(app)
-server.listen(port)
+var server = http.createServer(app);
+server.listen(port);
 
-console.log("http server listening on %d", port)
+
+var rule = new schedule.RecurrenceRule();
+rule.minute = [0,5,10,15,20,25,30,35,40,45,50,55];
+
+var job = schedule.scheduleJob(rule, function() {
+	var text = {};
+	var now = Date();
+
+	console.log("Scheduling!");	
+	text.text = "HEJHEJHEJHEJ";
+	displayText(text);
+});
+
+
+function displayText(params) {
+
+	var cmd = "text ";
+	
+	if (params.text != undefined)
+		cmd += " -t " + params.text + " ";
+
+	if (params.color != undefined)
+		cmd += " -c " + params.color + " ";
+		
+	if (params.ptsize != undefined)
+		cmd += " -p " + params.ptsize + " ";
+		
+	cmd += "\n";
+			
+	console.log("Triggering '%s'...", cmd);
+	pusher.trigger('test_channel', 'my_event', cmd + "\n");	
+
+}
 
 
 app.post('/text', function(request, response) {
 
 	console.log("Got POST!");
 	
-	var body = request.body;
-	var cmd = "text ";
-	
-	if (body.text != undefined)
-		cmd += " -t " + body.text + " ";
+	displayText(request.body);
 
-	if (body.color != undefined)
-		cmd += " -c " + body.color + " ";
-		
-	if (body.ptsize != undefined)
-		cmd += " -p " + body.ptsize + " ";
-		
-	cmd += "\n";
-			
+	response.send("OK");
+});
+
+app.post('/display', function(request, response) {
+
+	console.log("Processing POST /display...");
+	
+	var body = request.body;
+	var cmd = "display ";
+	
+	if (body.image != undefined)
+		cmd += " -f " + body.image + " ";
+
 	console.log("Triggering %s", cmd);
 	pusher.trigger('test_channel', 'my_event', cmd + "\n");	
 
 	response.send(cmd);
+	
+	console.log("Processing POST /display finished.");
 
 });
 
+app.post('/game-of-life', function(request, response) {
+
+	var body = request.body;
+	var cmd = "life ";
+	
+	pusher.trigger('test_channel', 'my_event', cmd + "\n");	
+
+	response.send(cmd);
+});
+
+app.post('/hue-square', function(request, response) {
+
+	var body = request.body;
+	var cmd = "hue-block ";
+	
+	pusher.trigger('test_channel', 'my_event', cmd + "\n");	
+
+	response.send(cmd);
+});
+
+
+
+
+/*
 function db(ws) {
 	console.log("getting ps");
 	pg = require("pg");
@@ -71,6 +139,7 @@ function db(ws) {
 
 };
 
+*/
 
 app.get('/', function(request, response) {
   response.json({message:'Hello World!' , postgres:process.env.DATABASE_URL, port:process.env.PORT});
@@ -90,7 +159,7 @@ app.get('/hello', function(request, response) {
 })
 
 app.listen(app.get('port'), function() {
-  console.log("Node app is running at localhost:" + app.get('port'))
+	console.log("Node app is running at localhost:" + port);
 })
 
 
