@@ -40,79 +40,48 @@ var job = schedule.scheduleJob(rule, function() {
 	var text = {};
 	var now = Date();
 
+	text.message = "5 minutes has passed since last time...";
+	text.color = "blue";
+	text.command = "text";
+	
 	console.log("Scheduling!");	
-	text.text = "HEJHEJHEJHEJ";
-	displayText(text);
+	pusher.trigger('test_channel', 'go', text);	
+});
+
+app.post('/go', function(request, response) {
+	pusher.trigger('test_channel', 'go', request.body);	
+	response.send("OK");
 });
 
 
-function displayText(params) {
-
-	var cmd = "text ";
-	
-	if (params.text != undefined)
-		cmd += " -t " + params.text + " ";
-
-	if (params.color != undefined)
-		cmd += " -c " + params.color + " ";
-		
-	if (params.ptsize != undefined)
-		cmd += " -p " + params.ptsize + " ";
-		
-	cmd += "\n";
-			
-	console.log("Triggering '%s'...", cmd);
-	pusher.trigger('test_channel', 'my_event', cmd + "\n");	
-
-}
-
-
 app.post('/text', function(request, response) {
-
-	console.log("Got POST!");
-	
-	displayText(request.body);
-
+	pusher.trigger('test_channel', 'text', request.body);	
 	response.send("OK");
 });
 
 app.post('/display', function(request, response) {
-
-	console.log("Processing POST /display...");
-	
-	var body = request.body;
-	var cmd = "display ";
-	
-	if (body.image != undefined)
-		cmd += " -f " + body.image + " ";
-
-	console.log("Triggering %s", cmd);
-	pusher.trigger('test_channel', 'my_event', cmd + "\n");	
-
-	response.send(cmd);
-	
-	console.log("Processing POST /display finished.");
-
+	pusher.trigger('test_channel', 'display', request.body);	
+	response.send("OK");
 });
+
+app.post('/scroll', function(request, response) {
+	pusher.trigger('test_channel', 'scroll', request.body);	
+	response.send("OK");
+});
+
+app.post('/animate', function(request, response) {
+	pusher.trigger('test_channel', 'animate', request.body);	
+	response.send("OK");
+});
+
 
 app.post('/game-of-life', function(request, response) {
-
-	var body = request.body;
-	var cmd = "life ";
-	
-	pusher.trigger('test_channel', 'my_event', cmd + "\n");	
-
-	response.send(cmd);
+	response.send("Nope!");
 });
 
+
 app.post('/hue-square', function(request, response) {
-
-	var body = request.body;
-	var cmd = "hue-block ";
-	
-	pusher.trigger('test_channel', 'my_event', cmd + "\n");	
-
-	response.send(cmd);
+	response.send("Nope!");
 });
 
 
