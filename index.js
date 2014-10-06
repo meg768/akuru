@@ -1,8 +1,22 @@
-var WebSocketServer = require("ws").Server
-var http = require("http")
-var express = require("express")
-var app = express()
-var port = process.env.PORT || 5000
+var http = require("http");
+var express = require("express");
+var app = express();
+var port = process.env.PORT || 5000;
+var bodyParser = require('body-parser');
+
+
+var Pusher = require('pusher');
+
+console.log("Initiating pusher...");
+var pusher = new Pusher({
+  appId: '90574',
+  key: '062bc67be8d42e4ded9b',
+  secret: '4f7560f8aa5001483c7f'
+});
+
+
+app.use( bodyParser.json() );       // to support JSON-encoded bodies
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(express.static(__dirname + "/"))
 
@@ -11,36 +25,31 @@ server.listen(port)
 
 console.log("http server listening on %d", port)
 
-var wss = new WebSocketServer({server: server})
-console.log("websocket server created")
 
-wss.on("connection", function(ws) {
-  var id = setInterval(function() {
-    ws.send(JSON.stringify(new Date()), function() {  })
-  }, 1000)
+app.post('/text', function(request, response) {
 
-  console.log("websocket connection open")
+	console.log("Got POST!");
+	
+	var body = request.body;
+	var cmd = "text ";
+	
+	if (body.text != undefined)
+		cmd += " -t " + body.text + " ";
 
-	ws.on('message', function(message) {
-	    console.log('received: %s', message);
-		ws.send("echo ");
+	if (body.color != undefined)
+		cmd += " -c " + body.color + " ";
 		
-		if (message == 'db') {
-			db(ws);
+	if (body.ptsize != undefined)
+		cmd += " -p " + body.ptsize + " ";
+		
+	cmd += "\n";
 			
-		}
-		else
-			ws.send(message);
+	console.log("Triggering %s", cmd);
+	pusher.trigger('test_channel', 'my_event', cmd + "\n");	
 
-	});
+	response.send(cmd);
 
-  ws.on("close", function() {
-    console.log("websocket connection close")
-    clearInterval(id)
-  })
-})
-
-
+});
 
 function db(ws) {
 	console.log("getting ps");
@@ -62,10 +71,21 @@ function db(ws) {
 
 };
 
-/*
 
 app.get('/', function(request, response) {
   response.json({message:'Hello World!' , postgres:process.env.DATABASE_URL, port:process.env.PORT});
+
+})
+
+app.get('/hello', function(request, response) {
+	var foo = {};
+	foo.message = "Hej";
+	foo.kalle = "olle";
+	foo.MEG = "HEJ!!";
+	foo.requestbody =  request.body;
+
+	response.json(foo);
+//  response.json({message:'Hello World!' , postgres:process.env.DATABASE_URL, port:process.env.PORT});
 
 })
 
@@ -74,9 +94,6 @@ app.listen(app.get('port'), function() {
 })
 
 
-app.get('/db', function (request, response) {
-})
-*/
 
 
 /*
