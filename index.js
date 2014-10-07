@@ -66,14 +66,13 @@ function ping() {
 
 	console.log("Done pinging...");
 }
-/*
+
 rule = new schedule.RecurrenceRule();
 rule.minute = [0,15,30,45];
 
 schedule.scheduleJob(rule, function() {
 	ping();	
 });
-*/
 
 
 app.post('/go', function(request, response) {
@@ -130,14 +129,13 @@ app.get('/hello', function(request, response) {
 	response.json(reply);
 })
 
-/*
 
 app.listen(app.get('port'), function() {
-	//ping();
+	ping();
 	console.log("Node app is running...");
 })
 
-*/
+
 /*
 function db(ws) {
 	console.log("getting ps");
