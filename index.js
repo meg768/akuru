@@ -98,7 +98,7 @@ var job = schedule.scheduleJob(rule, function() {
 	pusher.trigger('test_channel', 'ping', data);	
 });
 
-
+/*
 function ping() {
 
 	console.log("Pinging...");
@@ -123,6 +123,7 @@ schedule.scheduleJob(rule, function() {
 	ping();	
 });
 
+*/
 
 app.post('/go', function(request, response) {
 	console.log("Got GO...");
