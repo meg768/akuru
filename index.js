@@ -28,10 +28,9 @@ var pusher = new Pusher({
 app.use( bodyParser.json() );
 app.use(bodyParser.urlencoded({ extended: true }));
 
-/*
+
 var server = http.createServer(app);
 server.listen(port);
-*/
 
 var rule = new schedule.RecurrenceRule();
 rule.minute = [0,5,10,15,20,25,30,35,40,45,50,55];
