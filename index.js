@@ -73,7 +73,10 @@ schedule.scheduleJob(rule, function() {
 	ping();	
 });
 */
+
+
 app.post('/go', function(request, response) {
+	console.log("Got GO...");
 	pusher.trigger('test_channel', 'go', request.body);	
 	response.send("OK");
 });
