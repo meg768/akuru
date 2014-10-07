@@ -131,7 +131,6 @@ app.get('/hello', function(request, response) {
 
 
 app.listen(app.get('port'), function() {
-	ping();
 	console.log("Node app is running...");
 })
 
