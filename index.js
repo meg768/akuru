@@ -81,6 +81,10 @@ app.post('/go', function(request, response) {
 	response.send("OK");
 });
 
+app.post('/settings', function(request, response) {
+	pusher.trigger('test_channel', 'settings', request.body);	
+	response.send("OK");
+});
 
 app.post('/text', function(request, response) {
 	pusher.trigger('test_channel', 'text', request.body);	
