@@ -130,14 +130,14 @@ app.get('/hello', function(request, response) {
 	response.json(reply);
 })
 
-
+/*
 
 app.listen(app.get('port'), function() {
 	//ping();
 	console.log("Node app is running...");
 })
 
-
+*/
 /*
 function db(ws) {
 	console.log("getting ps");
