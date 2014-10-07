@@ -81,6 +81,11 @@ app.post('/go', function(request, response) {
 	response.send("OK");
 });
 
+app.post('/animation', function(request, response) {
+	pusher.trigger('test_channel', 'animation', request.body);	
+	response.send("OK");
+});
+
 app.post('/settings', function(request, response) {
 	pusher.trigger('test_channel', 'settings', request.body);	
 	response.send("OK");
@@ -106,15 +111,6 @@ app.post('/animate', function(request, response) {
 	response.send("OK");
 });
 
-
-app.post('/game-of-life', function(request, response) {
-	response.send("Nope!");
-});
-
-
-app.post('/hue-square', function(request, response) {
-	response.send("Nope!");
-});
 
 
 
