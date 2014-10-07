@@ -30,7 +30,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 
 var server = http.createServer(app);
-server.listen(port);
+server.listen(port, function() {
+	console.log("Server is listening...");
+});
 
 var rule = new schedule.RecurrenceRule();
 rule.minute = [0,5,10,15,20,25,30,35,40,45,50,55];
