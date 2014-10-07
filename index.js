@@ -28,10 +28,10 @@ var pusher = new Pusher({
 app.use( bodyParser.json() );
 app.use(bodyParser.urlencoded({ extended: true }));
 
-
+/*
 var server = http.createServer(app);
 server.listen(port);
-
+*/
 
 var rule = new schedule.RecurrenceRule();
 rule.minute = [0,5,10,15,20,25,30,35,40,45,50,55];
@@ -46,6 +46,31 @@ var job = schedule.scheduleJob(rule, function() {
 	
 	console.log("Scheduling!");	
 	pusher.trigger('test_channel', 'go', text);	
+});
+
+
+function ping() {
+
+	console.log("Pinging...");
+	
+	var options = {};
+	options.host = "akuru.herokuapp.com";
+	options.path = "/hello";
+	
+	var request = http.request(options, function(response) {
+		
+	});
+	
+	request.end();
+
+	console.log("Done pinging...");
+}
+
+rule = new schedule.RecurrenceRule();
+rule.minute = [0,15,30,45];
+
+schedule.scheduleJob(rule, function() {
+	ping();	
 });
 
 app.post('/go', function(request, response) {
@@ -86,6 +111,28 @@ app.post('/hue-square', function(request, response) {
 
 
 
+app.get('/', function(request, response) {
+  response.json({message:'Hello World!' , postgres:process.env.DATABASE_URL, port:process.env.PORT});
+
+})
+
+app.get('/hello', function(request, response) {
+
+	console.log("Got HELLO request...");
+	
+	var reply = {};
+	reply.message = "Hello";
+
+	response.json(reply);
+})
+
+
+
+app.listen(app.get('port'), function() {
+	ping();
+	console.log("Node app is running...");
+})
+
 
 /*
 function db(ws) {
@@ -109,29 +156,6 @@ function db(ws) {
 };
 
 */
-
-app.get('/', function(request, response) {
-  response.json({message:'Hello World!' , postgres:process.env.DATABASE_URL, port:process.env.PORT});
-
-})
-
-app.get('/hello', function(request, response) {
-	var foo = {};
-	foo.message = "Hej";
-	foo.kalle = "olle";
-	foo.MEG = "HEJ!!";
-	foo.requestbody =  request.body;
-
-	response.json(foo);
-//  response.json({message:'Hello World!' , postgres:process.env.DATABASE_URL, port:process.env.PORT});
-
-})
-
-app.listen(app.get('port'), function() {
-	console.log("Node app is running at localhost:" + port);
-})
-
-
 
 
 /*
