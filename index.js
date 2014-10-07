@@ -90,21 +90,12 @@ server.listen(port, function() {
 var rule = new schedule.RecurrenceRule();
 rule.minute = [0,5,10,15,20,25,30,35,40,45,50,55];
 
-function showTime() {
-	var now = new Date();
 
-	var text = {};
-	text.message   = sprintf("Klockan är nu %02d:%02d...", now.getHours(), now.getMinutes());
-	text.textcolor = "blue";
-	text.command   = "text";
-	
-	console.log("Scheduling!");	
-	pusher.trigger('test_channel', 'go', text);	
-	
-}
 
 var job = schedule.scheduleJob(rule, function() {
-	showTime();
+	console.log("Scheduling!");	
+	var data = {};
+	pusher.trigger('test_channel', 'ping', data);	
 });
 
 
