@@ -88,80 +88,120 @@ server.listen(port, function() {
 });
 
 var rule = new schedule.RecurrenceRule();
-rule.minute = [0,5,10,15,20,25,30,35,40,45,50,55];
+rule.minute = new schedule.Range(1, 59); //[0,5,10,15,20,25,30,35,40,45,50,55];
 
 
 
-var job = schedule.scheduleJob(rule, function() {
-	console.log("Scheduling!");	
-	var data = {};
-	pusher.trigger('test_channel', 'ping', data);	
-});
-
-
-function ping() {
-
-	console.log("Pinging...");
-	
-	var options = {};
-	options.host = "akuru.herokuapp.com";
-	options.path = "/hello";
-	
-	var request = http.request(options, function(response) {
-		
-	});
-	
-	request.end();
-
-	console.log("Done pinging...");
+function choose(items) {
+	return items[Math.floor((Math.random() * items.length))];
 }
 
-rule = new schedule.RecurrenceRule();
-rule.minute = [0,15,30,45];
+function displayTime() {
+	
+	var rule = new schedule.RecurrenceRule();
+	rule.minute = new schedule.Range(0, 59, 1 + Math.floor((Math.random() * 5)));
+	rule.minute = new schedule.Range(0, 59, 1);
 
-schedule.scheduleJob(rule, function() {
-	ping();	
-});
+	schedule.scheduleJob(rule, function() {
+		
+		var message = {};
+		message.type = "text";
+		message.message = "    {%HH}:{%MM}    {%HH}:{%MM}    {%HH}:{%MM}";
+		message.textcolor = choose(["red", "blue", "yellow"]);
+		
+		pusher.trigger('test_channel', 'message', message);	
+	});
+}	
+
+	
+// Display image
+function displayImages() {
+	
+	var rule = new schedule.RecurrenceRule();
+	rule.minute = new schedule.Range(0, 59, 1 + Math.floor((Math.random() * 5))); //[0,5,10,15,20,25,30,35,40,45,50,55];
+	rule.minute = new schedule.Range(0, 59, 1);
+
+	schedule.scheduleJob(rule, function() {
+		
+		var message = {};
+		message.type      = "image";
+		message.name      = choose(["smiley.png", "smiley-lady.png", "smiley-angry.png", "smiley-grin.png", "smiley-sad.png", "candy.png"]);
+		message.scrollin  = choose(["left","top","right","bottom"]);
+		message.scrollout = choose(["left","top","right","bottom"]);
+		message.duration  = 3;
+
+		pusher.trigger('test_channel', 'message', message);	
+	});
+}
+	
+// Display animations
+function displayAnimations() {
+	
+	var rule = new schedule.RecurrenceRule();
+	rule.minute = new schedule.Range(0, 59, 1 + Math.floor((Math.random() * 5))); //[0,5,10,15,20,25,30,35,40,45,50,55];
+	rule.minute = new schedule.Range(0, 59, 1);
+
+	schedule.scheduleJob(rule, function() {
+		
+		var message = {};
+		message.type     = "animation";
+		message.name     = choose(["snow.gif", "bubbles.gif", "dancer.gif", "rain.gif", "boat.gif", "boxer.gif", "pacghosts.gif", "pacghosts.gif", "fireplace.gif", "squares.gif"]);
+		message.duration = 10;
+		
+		pusher.trigger('test_channel', 'message', message);	
+	});
+}
+	
+// Display games
+function displayGames() {
+	
+	var rule = new schedule.RecurrenceRule();
+	rule.minute = new schedule.Range(0, 59, 1 + Math.floor((Math.random() * 5))); //[0,5,10,15,20,25,30,35,40,45,50,55];
+	rule.minute = new schedule.Range(0, 59, 1);
+
+	schedule.scheduleJob(rule, function() {
+		
+		var message = {};
+		message.type      = "game";
+		message.name      = choose(["life", "static"]);
+
+		pusher.trigger('test_channel', 'message', message);	
+	});
+}
 
 
-app.post('/go', function(request, response) {
-	console.log("Got GO...");
-	pusher.trigger('test_channel', 'go', request.body);	
+function schedulePing() {
+	function ping() {
+	
+		console.log("Pinging...");
+		
+		var options = {};
+		options.host = "akuru.herokuapp.com";
+		options.path = "/hello";
+		
+		var request = http.request(options, function(response) {
+			
+		});
+		
+		request.end();
+	
+		console.log("Done pinging...");
+	}
+	
+	var rule = new schedule.RecurrenceRule();
+	rule.minute = [0,15,30,45];
+	
+	schedule.scheduleJob(rule, function() {
+		ping();	
+	});
+}
+
+
+app.post('/message', function(request, response) {
+	console.log(request.body);
+	pusher.trigger('test_channel', 'message', request.body);	
 	response.send("OK");
 });
-
-app.post('/animation', function(request, response) {
-	pusher.trigger('test_channel', 'animation', request.body);	
-	response.send("OK");
-});
-
-app.post('/settings', function(request, response) {
-	pusher.trigger('test_channel', 'settings', request.body);	
-	response.send("OK");
-});
-
-app.post('/text', function(request, response) {
-	pusher.trigger('test_channel', 'text', request.body);	
-	response.send("OK");
-});
-
-app.post('/display', function(request, response) {
-	pusher.trigger('test_channel', 'display', request.body);	
-	response.send("OK");
-});
-
-app.post('/scroll', function(request, response) {
-	pusher.trigger('test_channel', 'scroll', request.body);	
-	response.send("OK");
-});
-
-app.post('/animate', function(request, response) {
-	pusher.trigger('test_channel', 'animate', request.body);	
-	response.send("OK");
-});
-
-
-
 
 app.get('/', function(request, response) {
   response.json({message:'Hello World!' , postgres:process.env.DATABASE_URL, port:process.env.PORT});
@@ -183,6 +223,10 @@ app.listen(app.get('port'), function() {
 	console.log("Node app is running...");
 })
 
+displayTime();
+displayImages();
+displayAnimations();
+displayGames();
 
 /*
 function db(ws) {
