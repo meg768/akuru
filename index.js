@@ -227,6 +227,7 @@ displayTime();
 displayImages();
 displayAnimations();
 displayGames();
+schedulePing();
 
 /*
 function db(ws) {
