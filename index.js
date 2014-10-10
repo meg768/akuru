@@ -119,7 +119,7 @@ function displayImages() {
 	
 	var rule = new schedule.RecurrenceRule();
 	rule.minute = new schedule.Range(0, 59, 1 + Math.floor((Math.random() * 5))); //[0,5,10,15,20,25,30,35,40,45,50,55];
-	rule.minute = new schedule.Range(0, 59, 1);
+//	rule.minute = new schedule.Range(0, 59, 1);
 
 	schedule.scheduleJob(rule, function() {
 		
@@ -139,7 +139,7 @@ function displayAnimations() {
 	
 	var rule = new schedule.RecurrenceRule();
 	rule.minute = new schedule.Range(0, 59, 1 + Math.floor((Math.random() * 5))); //[0,5,10,15,20,25,30,35,40,45,50,55];
-	rule.minute = new schedule.Range(0, 59, 1);
+//	rule.minute = new schedule.Range(0, 59, 1);
 
 	schedule.scheduleJob(rule, function() {
 		
@@ -157,7 +157,7 @@ function displayGames() {
 	
 	var rule = new schedule.RecurrenceRule();
 	rule.minute = new schedule.Range(0, 59, 1 + Math.floor((Math.random() * 5))); //[0,5,10,15,20,25,30,35,40,45,50,55];
-	rule.minute = new schedule.Range(0, 59, 1);
+//	rule.minute = new schedule.Range(0, 59, 1);
 
 	schedule.scheduleJob(rule, function() {
 		
