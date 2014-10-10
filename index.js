@@ -118,7 +118,7 @@ function displayTime() {
 function displayImages() {
 	
 	var rule = new schedule.RecurrenceRule();
-	rule.minute = new schedule.Range(0, 59, 1 + Math.floor((Math.random() * 5))); //[0,5,10,15,20,25,30,35,40,45,50,55];
+	rule.minute = new schedule.Range(0, 59, 1 + Math.floor((Math.random() * 10))); //[0,5,10,15,20,25,30,35,40,45,50,55];
 //	rule.minute = new schedule.Range(0, 59, 1);
 
 	schedule.scheduleJob(rule, function() {
@@ -138,15 +138,15 @@ function displayImages() {
 function displayAnimations() {
 	
 	var rule = new schedule.RecurrenceRule();
-	rule.minute = new schedule.Range(0, 59, 1 + Math.floor((Math.random() * 5))); //[0,5,10,15,20,25,30,35,40,45,50,55];
+	rule.minute = new schedule.Range(0, 59, 1 + Math.floor((Math.random() * 10))); //[0,5,10,15,20,25,30,35,40,45,50,55];
 //	rule.minute = new schedule.Range(0, 59, 1);
 
 	schedule.scheduleJob(rule, function() {
 		
 		var message = {};
 		message.type     = "animation";
-		message.name     = choose(["snow.gif", "bubbles.gif", "dancer.gif", "rain.gif", "boat.gif", "boxer.gif", "pacghosts.gif", "pacghosts.gif", "fireplace.gif", "squares.gif"]);
-		message.duration = 10;
+		message.name     = choose(["pacman.gif", "snow.gif", "bubbles.gif", "dancer.gif", "rain.gif", "boat.gif", "boxer.gif", "pacghosts.gif", "fireplace.gif", "squares.gif"]);
+		//message.duration = 10;
 		
 		pusher.trigger('test_channel', 'message', message);	
 	});
@@ -156,7 +156,7 @@ function displayAnimations() {
 function displayGames() {
 	
 	var rule = new schedule.RecurrenceRule();
-	rule.minute = new schedule.Range(0, 59, 1 + Math.floor((Math.random() * 5))); //[0,5,10,15,20,25,30,35,40,45,50,55];
+	rule.minute = new schedule.Range(0, 59, 1 + Math.floor((Math.random() * 10))); //[0,5,10,15,20,25,30,35,40,45,50,55];
 //	rule.minute = new schedule.Range(0, 59, 1);
 
 	schedule.scheduleJob(rule, function() {
@@ -164,7 +164,7 @@ function displayGames() {
 		var message = {};
 		message.type      = "game";
 		message.name      = choose(["life", "static"]);
-
+		
 		pusher.trigger('test_channel', 'message', message);	
 	});
 }
