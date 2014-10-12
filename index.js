@@ -145,8 +145,7 @@ function displayAnimations() {
 		
 		var message = {};
 		message.type     = "animation";
-		message.name     = choose(["pacman.gif", "snow.gif", "bubbles.gif", "dancer.gif", "rain.gif", "boat.gif", "boxer.gif", "pacghosts.gif", "fireplace.gif", "squares.gif"]);
-		//message.duration = 10;
+		message.name     = choose(["pacman.gif", "snow.gif", "bubbles.gif", "dancer.gif", "rain.gif", "boat.gif", "boxer.gif", "pacghosts.gif", "fireplace.gif", "squares.gif", "wizard.gif", "tree.gif"]);
 		
 		pusher.trigger('test_channel', 'message', message);	
 	});
@@ -184,8 +183,6 @@ function schedulePing() {
 		});
 		
 		request.end();
-	
-		console.log("Done pinging...");
 	}
 	
 	var rule = new schedule.RecurrenceRule();
@@ -195,7 +192,6 @@ function schedulePing() {
 		ping();	
 	});
 }
-
 
 app.post('/message', function(request, response) {
 	console.log(request.body);
