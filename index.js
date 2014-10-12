@@ -83,13 +83,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 
 var server = http.createServer(app);
+
 server.listen(port, function() {
 	console.log("Server is listening...");
 });
-
-var rule = new schedule.RecurrenceRule();
-rule.minute = new schedule.Range(1, 59); //[0,5,10,15,20,25,30,35,40,45,50,55];
-
 
 
 function choose(items) {
@@ -118,8 +115,7 @@ function displayTime() {
 function displayImages() {
 	
 	var rule = new schedule.RecurrenceRule();
-	rule.minute = new schedule.Range(0, 59, 1 + Math.floor((Math.random() * 10))); //[0,5,10,15,20,25,30,35,40,45,50,55];
-//	rule.minute = new schedule.Range(0, 59, 1);
+	rule.minute = new schedule.Range(0, 59, 5 + Math.floor((Math.random() * 10))); //[0,5,10,15,20,25,30,35,40,45,50,55];
 
 	schedule.scheduleJob(rule, function() {
 		
@@ -138,8 +134,7 @@ function displayImages() {
 function displayAnimations() {
 	
 	var rule = new schedule.RecurrenceRule();
-	rule.minute = new schedule.Range(0, 59, 1 + Math.floor((Math.random() * 10))); //[0,5,10,15,20,25,30,35,40,45,50,55];
-//	rule.minute = new schedule.Range(0, 59, 1);
+	rule.minute = new schedule.Range(0, 59, 5 + Math.floor((Math.random() * 10))); //[0,5,10,15,20,25,30,35,40,45,50,55];
 
 	schedule.scheduleJob(rule, function() {
 		
@@ -155,8 +150,7 @@ function displayAnimations() {
 function displayGames() {
 	
 	var rule = new schedule.RecurrenceRule();
-	rule.minute = new schedule.Range(0, 59, 1 + Math.floor((Math.random() * 10))); //[0,5,10,15,20,25,30,35,40,45,50,55];
-//	rule.minute = new schedule.Range(0, 59, 1);
+	rule.minute = new schedule.Range(0, 59, 5 + Math.floor((Math.random() * 10))); //[0,5,10,15,20,25,30,35,40,45,50,55];
 
 	schedule.scheduleJob(rule, function() {
 		
