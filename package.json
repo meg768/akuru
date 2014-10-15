@@ -6,11 +6,12 @@
     "url": "https://github.com/heroku-examples/node-ws-test.git"
   },
   "dependencies": {
-    "express": "^4.4.5",
-    "pg": "3.4.4",
     "body-parser": "~1.9.0",
-    "pusher": "~1.0.1",
-    "node-schedule": "~0.1.13"
+    "express": "^4.4.5",
+    "feedsub": "^0.2.8",
+    "node-schedule": "~0.1.13",
+    "pg": "3.4.4",
+    "pusher": "~1.0.1"
   },
   "engines": {
     "node": "0.10.x"

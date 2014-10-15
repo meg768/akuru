@@ -93,6 +93,61 @@ function choose(items) {
 	return items[Math.floor((Math.random() * items.length))];
 }
 
+
+
+
+function showNewsFeed() {
+	var feedsub = require('feedsub');
+	var schedule = require('node-schedule');
+
+	var news = [];
+	
+	var reader = new feedsub('http://www.svd.se/?service=rss&type=latest', {
+	  interval: 10, // check feed every 10 minutes,
+	  lastDate: new Date()
+	});
+	
+	reader.on('item', function(item) {
+		
+		if (item.title && item.category && item.pubdate) {
+	
+			news.push({
+				category: item.category, 
+				text: item.title,
+				date: new Date(item.pubdate)
+			});
+			
+			news.sort(function(a, b) {
+				return a.date.valueOf() - b.date.valueOf();
+			});
+		
+			news.splice(0, news.length - 3);		
+		}
+	
+	});
+	
+	reader.start();
+
+	var rule = new schedule.RecurrenceRule();
+	rule.minute = new schedule.Range(0, 59, 1 + Math.floor((Math.random() * 10)));
+
+	schedule.scheduleJob(rule, function() {
+
+		for (var i = 0; i < news.length; i++) {
+
+			var message = {};
+			message.type = "text";
+			message.message = news[i].category + ": " + news[i].text;
+			message.textcolor = "blue";
+			
+			console.log(message.message);
+			pusher.trigger('test_channel', 'message', message);	
+		}
+	});
+	
+}
+
+
 function displayTime() {
 	
 	var rule = new schedule.RecurrenceRule();
@@ -217,6 +272,7 @@ displayTime();
 displayImages();
 displayAnimations();
 displayGames();
+showNewsFeed();
 schedulePing();
 
 /*
@@ -253,86 +309,4 @@ port: 5432
 password: ov0vcsWLVsLQczUE4JdiwymI9N
 */
 
-/*
-
-var WebSocketServer = require("ws").Server
-var http = require("http")
-var express = require('express')
-var app = express();
-
-
-
-
-
-
-app.set('port', (process.env.PORT || 8000))
-app.use(express.static(__dirname + '/public'))
-
-app.get('/', function(request, response) {
-  response.json({message:'Hello World!' , postgres:process.env.DATABASE_URL, port:process.env.PORT});
-
-})
-
-app.listen(app.get('port'), function() {
-  console.log("Node app is running at localhost:" + app.get('port'))
-})
-
-
-
-
-var server = http.createServer(app);
-server.listen(8080);
-
-console.log("http server listening on %d", 8080)
-
-var wss = new WebSocketServer({server: server})
-console.log("websocket server created")
-
-wss.on("connection", function(ws) {
-  var id = setInterval(function() {
-    ws.send(JSON.stringify(new Date()), function() {  })
-  }, 1000)
-
-  console.log("websocket connection open")
-
-  ws.on("close", function() {
-    console.log("websocket connection close")
-    clearInterval(id)
-  })
-})
-
-
-
-var Pusher = require('pusher');
-
-var pusher = new Pusher({
-  appId: '90574',
-  key: '062bc67be8d42e4ded9b',
-  secret: '4f7560f8aa5001483c7f'
-
-  encrypted: ENCRYPTED, // optional, defaults to false
-  host: 'HOST', // optional, defaults to api.pusherapp.com
-  port: PORT, // optional, defaults to 80 for unencrypted and 443 for encrypted
-
-
-});
-
-var pg = require('pg');
-
-app.get('/db', function (request, response) {
-
-  pg.connect(process.env.DATABASE_URL, function(err, client, done) {
-    client.query('SELECT * FROM test_table', function(err, result) {
-	pusher.trigger('test_channel', 'my_event', { message: "hello world" });
-
-      done();
-      if (err)
-       { console.error(err); response.send("Error " + err); }
-      else
-       { response.send(result.rows); }
-    });
-  });
-})
-
-*/
 
