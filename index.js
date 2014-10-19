@@ -133,6 +133,8 @@ function showNewsFeed() {
 	
 	schedule.scheduleJob(rule, function() {
 
+		console.log("Bringing on the news...");
+		
 		var message = {};
 		message.type = "text";
 		message.message = "  {%HH}:{%MM}  ";
@@ -142,9 +144,7 @@ function showNewsFeed() {
 
 		for (var i = 0; i < news.length; i++) {
 
-			message.message = news[i].category + ": " + news[i].text;			
-			console.log(message.message);
-			
+			message.message = news[i].category + " - " + news[i].text;			
 			pusher.trigger('test_channel', 'message', message);	
 		}
 	});
