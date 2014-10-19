@@ -152,13 +152,13 @@ function displayTime() {
 	
 	var rule = new schedule.RecurrenceRule();
 	rule.minute = new schedule.Range(0, 59, 1 + Math.floor((Math.random() * 5)));
-	rule.minute = new schedule.Range(0, 59, 1);
+//	rule.minute = new schedule.Range(0, 59, 1);
 
 	schedule.scheduleJob(rule, function() {
 		
 		var message = {};
 		message.type = "text";
-		message.message = "    {%HH}:{%MM}    {%HH}:{%MM}    {%HH}:{%MM}";
+		message.message = "    {%HH}:{%MM}    ";
 		message.textcolor = choose(["red", "blue", "yellow"]);
 		
 		pusher.trigger('test_channel', 'message', message);	
@@ -269,9 +269,9 @@ app.listen(app.get('port'), function() {
 })
 
 displayTime();
-displayImages();
-displayAnimations();
-displayGames();
+//displayImages();
+//displayAnimations();
+//displayGames();
 showNewsFeed();
 schedulePing();
 
