@@ -129,8 +129,8 @@ function showNewsFeed() {
 	reader.start();
 
 	var rule = new schedule.RecurrenceRule();
-	rule.minute = new schedule.Range(0, 59, 1 + Math.floor((Math.random() * 10)));
-
+	rule.minute = [15, 30, 45];
+	
 	schedule.scheduleJob(rule, function() {
 
 		for (var i = 0; i < news.length; i++) {
@@ -205,7 +205,7 @@ function displayAnimations() {
 function displayGames() {
 	
 	var rule = new schedule.RecurrenceRule();
-	rule.minute = new schedule.Range(0, 59, 5 + Math.floor((Math.random() * 10))); //[0,5,10,15,20,25,30,35,40,45,50,55];
+	rule.minute = new schedule.Range(1, 59, 5 + Math.floor((Math.random() * 10))); //[0,5,10,15,20,25,30,35,40,45,50,55];
 
 	schedule.scheduleJob(rule, function() {
 		
@@ -268,7 +268,7 @@ app.listen(app.get('port'), function() {
 	console.log("Node app is running...");
 })
 
-displayTime();
+//displayTime();
 //displayImages();
 //displayAnimations();
 //displayGames();
