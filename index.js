@@ -103,7 +103,7 @@ function showNewsFeed() {
 	var news = [];
 	
 	var reader = new feedsub('http://www.svd.se/?service=rss&type=latest', {
-	  interval: 10, // check feed every 10 minutes,
+	  interval: 7, // check feed every 10 minutes,
 	  lastDate: new Date()
 	});
 	
@@ -129,7 +129,7 @@ function showNewsFeed() {
 	reader.start();
 
 	var rule = new schedule.RecurrenceRule();
-	rule.minute = [15, 30, 45];
+	rule.minute = [5, 15, 25, 35, 45, 55];
 	
 	schedule.scheduleJob(rule, function() {
 
