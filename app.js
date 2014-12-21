@@ -89,9 +89,7 @@ function main() {
 		var twit    = require('twit');
 		var twitter = new twit(twitterOptions);
 		var stream  = twitter.stream('user', { include_entities : true });
-		
-	
-	
+
 		
 		stream.on('direct_message', function (message) {
 			
@@ -250,13 +248,11 @@ function main() {
 			console.log("Bringing on the news...");
 			
 			var message = {};
-			message.message = "{%HH}:{%MM}";
 			message.textcolor = choose(["red", "blue", "yellow"]);
 			
 			pusher.trigger('test_channel', 'text', message);	
 	
 			for (var i = 0; i < news.length; i++) {
-	
 				message.message = news[i].category + " - " + news[i].text;			
 				pusher.trigger('test_channel', 'text', message);	
 			}
@@ -343,15 +339,6 @@ function main() {
 
 		rule = new schedule.RecurrenceRule();
 		rule.hour = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22];
-		rule.minute = [15, 30, 45];
-		
-		schedule.scheduleJob(rule, function() {
-			var now = new Date();		
-			addCmd(sprintf('./run-text "%02d:%02d" -i 2 -c blue', now.getHours(), now.getMinutes()));
-		});		
-
-		rule = new schedule.RecurrenceRule();
-		rule.hour = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22];
 		rule.minute = 10;
 		
 		schedule.scheduleJob(rule, function() {
@@ -397,13 +384,13 @@ function main() {
 		app.use(bodyParser.json());
 		app.use(bodyParser.urlencoded({ extended: true }));
 		
-		/*
+		
 		var server = http.createServer(app);
 		
 		server.listen(port, function() {
 			console.log("Server is listening...");
 		});
-		*/
+		
 		
 		app.post('/text', function(request, response) {
 			console.log(request.body);
