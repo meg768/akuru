@@ -184,21 +184,25 @@ function main() {
 				// Strip off the trailing #http://...
 				text = text.substr(0, strip < 0 ? undefined : strip).trim();
 					
+					
 				if (tweet.user != undefined && tweet.user != null) {
 					var profileImageUrl = tweet.user.profile_image_url;
 					var profileName = tweet.user.name;
 					var profileScreenName = tweet.user.screen_name;
 		
-					var message = {};
-					
-					message.message = profileName;
-					message.textcolor = "blue";
-					pusher.trigger('test_channel', 'text', message);	
+					var messages = []; 
 
-					message.message = text;
-					message.textcolor = "red";
-					pusher.trigger('test_channel', 'text', message);	
+					messages.push({
+						message: profileName,
+						textcolor: "blue"
+					});
 
+					messages.push({
+						message: text,
+						textcolor: "red"
+					});
+
+					pusher.trigger('test_channel', 'text', messages);	
 				}
 				
 			}		
@@ -208,18 +212,20 @@ function main() {
 	};
 	
 	
-	function showNewsFeed() {
+	function enableRSS(url, feedName) {
 		var feedsub = require('feedsub');
 		var schedule = require('node-schedule');
 	
 		var news = [];
 		
-		var reader = new feedsub('http://www.svd.se/?service=rss&type=latest', {
+		var reader = new feedsub(url, {
 		  interval: 7, // check feed every 10 minutes,
 		  lastDate: new Date()
 		});
 		
 		reader.on('item', function(item) {
+			
+			console.log("RSS: ", url, item);
 			
 			if (item.title && item.category && item.pubdate) {
 		
@@ -245,23 +251,29 @@ function main() {
 		
 		schedule.scheduleJob(rule, function() {
 	
-			console.log("Bringing on the news...");
-			
-			var messages = [];
-
-			for (var i = 0; i < news.length; i++) {
-				var message = {};
-				message.type = "text";
-				message.textcolor = choose(["red", "blue", "yellow", "magenta"]);
-				message.message = news[i].category;
-				messages.push(message);
+			if (news.length > 0) {
+				console.log("Bringing on the news...");
 				
-				message.message = news[i].text;
-				messages.push(message);
+				var messages = [];
+				var message = {};
+				var now = new Date();
+				var color = choose(["red", "blue", "yellow", "magenta"]);
+				
+				messages.push({
+					message: sprintf("%02d:%02d Nyhetsflöde från %s ", now.getHours(), now.getMinutes(), feedName),
+					textcolor: color
+				});
+				
+				for (var i = 0; i < news.length; i++) {
+					messages.push({
+						message: sprintf("%s - %s", news[i].category, news[i].text),
+						textcolor: color
+					});
+				}
+				
+				pusher.trigger('test_channel', 'text', messages);	
 				
 			}
-			
-			pusher.trigger('test_channel', 'message', messages);	
 		});
 		
 	}
@@ -428,7 +440,8 @@ function main() {
 
 	startExpress();
 		
-	showNewsFeed();
+	enableRSS('http://www.svd.se/?service=rss&type=latest', "SvD");
+	enableRSS('http://www.sydsvenskan.se/rss.xml', "SDS");
 	schedulePing();
 	enableTwitter();
 	scheduleAnimations();
