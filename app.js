@@ -256,10 +256,6 @@ function main() {
 		
 	}
 
-
-
-
-
 	function scheduleAnimations() {
 		var rule, schedule = require('node-schedule');
 
@@ -383,22 +379,20 @@ function main() {
 		var port = process.env.PORT || 5000;
 	
 		app.use(express.static(__dirname + "/"))
-		app.use( bodyParser.json() );
+		app.use(bodyParser.json());
 		app.use(bodyParser.urlencoded({ extended: true }));
 		
-		
+		/*
 		var server = http.createServer(app);
 		
 		server.listen(port, function() {
 			console.log("Server is listening...");
 		});
+		*/
 		
-		
-		
-		
-		app.post('/message', function(request, response) {
+		app.post('/text', function(request, response) {
 			console.log(request.body);
-			pusher.trigger('test_channel', 'message', request.body);	
+			pusher.trigger('test_channel', 'text', request.body);	
 			response.send("OK");
 		});
 		
@@ -424,7 +418,7 @@ function main() {
 		
 	}
 
-	//startExpress();
+	startExpress();
 		
 	showNewsFeed();
 	schedulePing();
