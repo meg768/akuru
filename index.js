@@ -9,7 +9,7 @@ var schedule = require('node-schedule');
 
 
 
-process.env.TZ = 'Europe/Stockholm';
+//process.env.TZ = 'Europe/Stockholm';
 	
 	
 	
