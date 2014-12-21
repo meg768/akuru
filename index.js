@@ -9,6 +9,19 @@ var schedule = require('node-schedule');
 
 
 
+process.env.TZ = 'Europe/Stockholm';
+	
+	
+	
+	function rand(min, max) {
+		return Math.floor(Math.random() * (max - min + 1)) + min;
+	}
+	
+	function choose() {
+		return arguments[rand(0, arguments.length - 1)];
+	}
+
+
 
 (function() {
 	
@@ -211,7 +224,7 @@ function enableTwitter() {
 				var profileName = tweet.user.name;
 				var profileScreenName = tweet.user.screen_name;
 	
-				addCmd(sprintf('./run-text "%s" -c blue', profileName));
+				addCmd(sprintf('./run-text "%s" -c blue', profileName));	
 				addCmd(sprintf('./run-text "%s" -c red', text));
 			}
 			
@@ -262,16 +275,15 @@ function showNewsFeed() {
 		console.log("Bringing on the news...");
 		
 		var message = {};
-		message.type = "text";
-		message.message = "  {%HH}:{%MM}  ";
+		message.message = "{%HH}:{%MM}";
 		message.textcolor = choose(["red", "blue", "yellow"]);
 		
-		pusher.trigger('test_channel', 'message', message);	
+		pusher.trigger('test_channel', 'text', message);	
 
 		for (var i = 0; i < news.length; i++) {
 
 			message.message = news[i].category + " - " + news[i].text;			
-			pusher.trigger('test_channel', 'message', message);	
+			pusher.trigger('test_channel', 'text', message);	
 		}
 	});
 	
@@ -422,6 +434,9 @@ app.listen(app.get('port'), function() {
 showNewsFeed();
 schedulePing();
 enableTwitter();
+scheduleAnimations();
+
+console.log(new Date());
 
 /*
 function db(ws) {
