@@ -191,8 +191,16 @@ function main() {
 					var profileName = tweet.user.name;
 					var profileScreenName = tweet.user.screen_name;
 		
-					addCmd(sprintf('./run-text "%s" -c blue', profileName));	
-					addCmd(sprintf('./run-text "%s" -c red', text));
+					var message = {};
+					
+					message.message = profileName;
+					message.textcolor = "blue";
+					pusher.trigger('test_channel', 'text', message);	
+
+					message.message = text;
+					message.textcolor = "red";
+					pusher.trigger('test_channel', 'text', message);	
+
 				}
 				
 			}		
