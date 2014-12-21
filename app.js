@@ -445,7 +445,7 @@ function main() {
 		
 	enableRSS('http://www.svd.se/?service=rss&type=latest', "SvD", [2, 2+15, 2+30, 2+45]);
 	enableRSS('http://www.sydsvenskan.se/rss.xml', "SDS", [5, 5+15, 5+30, 5+45]);
-	enableRSS('feed://www.di.se/rss', "DI", [8, 8+15, 8+30, 8+45]);
+	enableRSS('http://www.di.se/rss', "DI", [8, 8+15, 8+30, 8+45]);
 
 	schedulePing();
 	enableTwitter();
