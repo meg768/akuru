@@ -11,7 +11,8 @@
     "feedsub": "^0.2.8",
     "node-schedule": "~0.1.13",
     "pg": "3.4.4",
-    "pusher": "~1.0.1"
+    "pusher": "~1.0.1",
+    "twit": "~1.1.18"
   },
   "engines": {
     "node": "0.10.x"

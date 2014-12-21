@@ -94,6 +94,132 @@ function choose(items) {
 }
 
 
+function addCmd(cmd) {
+	pusher.trigger('test_channel', 'command', cmd);	
+}
+
+function enableTwitter() {
+	var twitterOptions = {};	
+	twitterOptions.consumer_key = 'RMvVK1wDXgftuFqVwMZA1OmEG';
+	twitterOptions.consumer_secret = 'OlS3UoAMA48ZEWT8Ia2cYYTpZZRWNexBVzfhK84i93BXM1wDpK';
+	twitterOptions.access_token = '1241291215-fKIUjhl3LVRO9KHukvb23Srcc4rsD9y4J22ErsL';
+	twitterOptions.access_token_secret = 'lECypLbF3bTOd9r09uydHKUffuSS1zF8DgtTMfaGAHtWP';
+
+	// The Twitter API
+	var twit    = require('twit');
+	var twitter = new twit(twitterOptions);
+	var stream  = twitter.stream('user', { include_entities : true });
+	
+
+
+	
+	stream.on('direct_message', function (message) {
+		
+		console.log("Direct message:", message.direct_message.text);
+		
+		var texts = message.direct_message.text.split('\n');
+		
+		for (var index in texts) {
+			var text = texts[index];
+			var match = null;
+			
+			match = text.match(/\s*@perlin\s*(.*)/);
+			
+			if (match != null) {
+				addCmd(sprintf('./run-perlin %s', match[1]));
+				continue;
+			}
+
+			match = text.match(/\s*@circle\s*(.*)/);
+			
+			if (match != null) {
+				addCmd(sprintf('./run-circle %s', match[1]));
+				continue;
+			}
+			
+			match = text.match(/\s*@life\s*(.*)/);
+			
+			if (match != null) {
+				addCmd(sprintf('./run-life %s', match[1]));
+				continue;
+			}
+
+			match = text.match(/\s*@wipe\s*(.*)/);
+			
+			if (match != null) {
+				addCmd(sprintf('./run-wipe %s', match[1]));
+				continue;
+			}
+
+			match = text.match(/\s*@clock\s*(.*)/);
+			
+			if (match != null) {
+				addCmd(sprintf('./run-clock %s', match[1]));
+				continue;
+			}
+			
+			match = text.match(/\s*@animation\s+([^-]\S+)(.*)/);
+			
+			if (match != null) {
+				addCmd(sprintf('./run-animation images/%s.gif %s', match[1], match[2]));
+				continue;
+			}
+			
+			match = text.match(/\s*@image\s+([^-]\S+)(.*)/);
+			
+			if (match != null) {
+				addCmd(sprintf('./run-image images/%s.png %s', match[1], match[2]));
+				continue;
+			}
+
+			match = text.match(/\s*@reboot/);
+			
+			if (match != null) {
+				addCmd('reboot');
+				continue;
+			}
+
+			match = text.match('^[ ]*\./run-.+');
+
+			if (match != null) {
+				addCmd(text);			
+				continue;		
+			}
+			
+			addCmd(sprintf('./run-text "%s" -c blue', text));
+		} 
+
+	});
+
+
+	stream.on('tweet', function (tweet) {
+
+
+		var text = tweet.text;		
+		var strip = text.indexOf('http://');
+		
+		console.log("tweet:", tweet.text);
+
+		var retweet = text.match(/^RT\s+@.*?:\s*(.+)/);
+
+		if (retweet == null) {
+			// Strip off the trailing #http://...
+			text = text.substr(0, strip < 0 ? undefined : strip).trim();
+				
+			if (tweet.user != undefined && tweet.user != null) {
+				var profileImageUrl = tweet.user.profile_image_url;
+				var profileName = tweet.user.name;
+				var profileScreenName = tweet.user.screen_name;
+	
+				addCmd(sprintf('./run-text "%s" -c blue', profileName));
+				addCmd(sprintf('./run-text "%s" -c red', text));
+			}
+			
+		}		
+		
+	});
+	
+};
 
 
 function showNewsFeed() {
@@ -152,62 +278,95 @@ function showNewsFeed() {
 }
 
 
-function displayTime() {
-	
-}	
+	function scheduleAnimations() {
+		var rule, schedule = require('node-schedule');
 
-	
-// Display image
-function displayImages() {
-	
-	var rule = new schedule.RecurrenceRule();
-	rule.minute = [5 + Math.floor((Math.random() * 50))];
-
-	schedule.scheduleJob(rule, function() {
+		rule = new schedule.RecurrenceRule();
+		rule.minute = rand(0, 59);
+		rule.hour = [8, 9, 10, 17, 18, 19, 20, 21, 22, 23];
 		
-		var message = {};
-		message.type      = "image";
-		message.name      = choose(["smiley.png", "smiley-lady.png", "smiley-angry.png", "smiley-grin.png", "smiley-sad.png", "candy.png"]);
-		message.scrollin  = choose(["left","top","right","bottom"]);
-		message.scrollout = choose(["left","top","right","bottom"]);
-		message.duration  = 3;
+		schedule.scheduleJob(rule, function() {
+			addCmd(sprintf('./run-perlin -d 60'));
+		});	
 
-		pusher.trigger('test_channel', 'message', message);	
-	});
-}
-	
-// Display animations
-function displayAnimations() {
-	
-	var rule = new schedule.RecurrenceRule();
-	rule.minute = [5 + Math.floor((Math.random() * 50))];
+		rule = new schedule.RecurrenceRule();
+		rule.hour = [8, 9, 10, 17, 18, 19, 20, 21, 22, 23];
+		rule.minute = rand(0, 59);
+		
+		schedule.scheduleJob(rule, function() {
+			addCmd(sprintf('./run-circle -d 30'));
+		});		
+
+		rule = new schedule.RecurrenceRule();
+		rule.minute = rand(0, 59);
+		
+		schedule.scheduleJob(rule, function() {
+			addCmd(sprintf('./run-life -d 30'));
+		});		
+
+		rule = new schedule.RecurrenceRule();
+		rule.minute = rand(0, 59);
+		
+		schedule.scheduleJob(rule, function() {
+			addCmd(sprintf('./run-animation images/pacman.gif'));
+		});		
+
+		rule = new schedule.RecurrenceRule();
+		rule.minute = rand(0, 59);
+		
+		schedule.scheduleJob(rule, function() {
+			addCmd(sprintf('./run-animation images/fireplace.gif -d 30'));
+		});		
+
+		rule = new schedule.RecurrenceRule();
+		rule.minute = rand(0, 59);
+		
+		schedule.scheduleJob(rule, function() {
+			addCmd(sprintf('./run-animation images/bubbles.gif -d 30'));
+		});		
+
+		rule = new schedule.RecurrenceRule();
+		rule.minute = rand(0, 59);
+		
+		schedule.scheduleJob(rule, function() {
+			addCmd(sprintf('./run-animation images/tree.gif'));
+		});		
 
 
-	schedule.scheduleJob(rule, function() {
+		rule = new schedule.RecurrenceRule();
+		rule.minute = rand(0, 59);
 		
-		var message = {};
-		message.type     = "animation";
-		message.name     = choose(["pacman.gif", "snow.gif", "bubbles.gif", "dancer.gif", "rain.gif", "boat.gif", "boxer.gif", "pacghosts.gif", "fireplace.gif", "squares.gif", "wizard.gif", "tree.gif"]);
-		
-		pusher.trigger('test_channel', 'message', message);	
-	});
-}
-	
-// Display games
-function displayGames() {
-	
-	var rule = new schedule.RecurrenceRule();
-	rule.minute = [5 + Math.floor((Math.random() * 50))];
+		schedule.scheduleJob(rule, function() {
+			addCmd(sprintf('./run-twinkle -d 30'));
+		});		
 
-	schedule.scheduleJob(rule, function() {
+		rule = new schedule.RecurrenceRule();
+		rule.minute = [15, 30, 45];
+		rule.hour = [0, 1, 2, 3, 4, 5, 6, 7, 23];
 		
-		var message = {};
-		message.type      = "game";
-		message.name      = choose(["life", "static"]);
+		schedule.scheduleJob(rule, function() {
+			var now = new Date();		
+			addCmd(sprintf('./run-text "%02d:%02d" -i 2 -c red', now.getHours(), now.getMinutes()));
+		});		
+
+		rule = new schedule.RecurrenceRule();
+		rule.minute = [15, 30, 45];
+		rule.hour = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22];
 		
-		pusher.trigger('test_channel', 'message', message);	
-	});
-}
+		schedule.scheduleJob(rule, function() {
+			var now = new Date();		
+			addCmd(sprintf('./run-text "%02d:%02d" -i 2 -c blue', now.getHours(), now.getMinutes()));
+		});		
+
+		rule = new schedule.RecurrenceRule();
+		rule.minute = 10;
+		
+		schedule.scheduleJob(rule, function() {
+			var now = new Date();		
+			addCmd(sprintf('./run-image images/smiley.png -s '));
+		});		
+
+	}
 
 
 function schedulePing() {
@@ -260,12 +419,9 @@ app.listen(app.get('port'), function() {
 	console.log("Node app is running...");
 })
 
-displayTime();
-displayImages();
-displayAnimations();
-displayGames();
 showNewsFeed();
 schedulePing();
+enableTwitter();
 
 /*
 function db(ws) {
