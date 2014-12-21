@@ -212,10 +212,13 @@ function main() {
 	};
 	
 	
-	function enableRSS(url, feedName) {
+	function enableRSS(url, feedName, repeat) {
 		var feedsub = require('feedsub');
 		var schedule = require('node-schedule');
 	
+		if (repeat == undefined)
+			repeat = [5, 15, 25, 35, 45, 55];
+			
 		var news = [];
 		
 		var reader = new feedsub(url, {
@@ -247,7 +250,7 @@ function main() {
 		reader.start();
 	
 		var rule = new schedule.RecurrenceRule();
-		rule.minute = [5, 15, 25, 35, 45, 55];
+		rule.minute = repeat;
 		
 		schedule.scheduleJob(rule, function() {
 	
@@ -257,7 +260,7 @@ function main() {
 				var messages = [];
 				var message = {};
 				var now = new Date();
-				var color = choose(["red", "blue", "yellow", "magenta"]);
+				var color = choose(["red", "blue"]);
 				
 				messages.push({
 					message: sprintf("%02d:%02d Nyhetsflöde från %s ", now.getHours(), now.getMinutes(), feedName),
@@ -440,8 +443,10 @@ function main() {
 
 	startExpress();
 		
-	enableRSS('http://www.svd.se/?service=rss&type=latest', "SvD");
-	enableRSS('http://www.sydsvenskan.se/rss.xml', "SDS");
+	enableRSS('http://www.svd.se/?service=rss&type=latest', "SvD", [2, 2+15, 2+30, 2+45]);
+	enableRSS('http://www.sydsvenskan.se/rss.xml', "SDS", [5, 5+15, 5+30, 5+45]);
+	enableRSS('feed://www.di.se/rss', "DI", [8, 8+15, 8+30, 8+45]);
+
 	schedulePing();
 	enableTwitter();
 	scheduleAnimations();
