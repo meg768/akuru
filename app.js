@@ -269,14 +269,14 @@ function main() {
 
 		rule = new schedule.RecurrenceRule();
 		rule.minute = rand(0, 59);
-		rule.hour = [8, 9, 10, 17, 18, 19, 20, 21, 22, 23];
+		rule.hour = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22];
 		
 		schedule.scheduleJob(rule, function() {
 			addCmd(sprintf('./run-perlin -d 60'));
 		});	
 
 		rule = new schedule.RecurrenceRule();
-		rule.hour = [8, 9, 10, 17, 18, 19, 20, 21, 22, 23];
+		rule.hour = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22];
 		rule.minute = rand(0, 59);
 		
 		schedule.scheduleJob(rule, function() {
@@ -284,6 +284,7 @@ function main() {
 		});		
 
 		rule = new schedule.RecurrenceRule();
+		rule.hour = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22];
 		rule.minute = rand(0, 59);
 		
 		schedule.scheduleJob(rule, function() {
@@ -291,6 +292,7 @@ function main() {
 		});		
 
 		rule = new schedule.RecurrenceRule();
+		rule.hour = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22];
 		rule.minute = rand(0, 59);
 		
 		schedule.scheduleJob(rule, function() {
@@ -298,6 +300,7 @@ function main() {
 		});		
 
 		rule = new schedule.RecurrenceRule();
+		rule.hour = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22];
 		rule.minute = rand(0, 59);
 		
 		schedule.scheduleJob(rule, function() {
@@ -305,6 +308,7 @@ function main() {
 		});		
 
 		rule = new schedule.RecurrenceRule();
+		rule.hour = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22];
 		rule.minute = rand(0, 59);
 		
 		schedule.scheduleJob(rule, function() {
@@ -312,6 +316,7 @@ function main() {
 		});		
 
 		rule = new schedule.RecurrenceRule();
+		rule.hour = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22];
 		rule.minute = rand(0, 59);
 		
 		schedule.scheduleJob(rule, function() {
@@ -320,6 +325,7 @@ function main() {
 
 
 		rule = new schedule.RecurrenceRule();
+		rule.hour = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22];
 		rule.minute = rand(0, 59);
 		
 		schedule.scheduleJob(rule, function() {
@@ -328,7 +334,7 @@ function main() {
 
 		rule = new schedule.RecurrenceRule();
 		rule.minute = [15, 30, 45];
-		rule.hour = [0, 1, 2, 3, 4, 5, 6, 7, 23];
+		rule.hour = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22];
 		
 		schedule.scheduleJob(rule, function() {
 			var now = new Date();		
@@ -336,8 +342,8 @@ function main() {
 		});		
 
 		rule = new schedule.RecurrenceRule();
-		rule.minute = [15, 30, 45];
 		rule.hour = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22];
+		rule.minute = [15, 30, 45];
 		
 		schedule.scheduleJob(rule, function() {
 			var now = new Date();		
@@ -345,6 +351,7 @@ function main() {
 		});		
 
 		rule = new schedule.RecurrenceRule();
+		rule.hour = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22];
 		rule.minute = 10;
 		
 		schedule.scheduleJob(rule, function() {
