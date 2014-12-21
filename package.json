@@ -1,4 +1,4 @@
-{
+	{
   "name": "node-ws-test",
   "version": "0.0.1",
   "repository": {
@@ -18,6 +18,6 @@
     "node": "0.10.x"
   },
   "scripts": {
-    "start": "node index.js"
+    "start": "node app.js"
   }
 }
