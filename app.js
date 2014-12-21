@@ -247,15 +247,21 @@ function main() {
 	
 			console.log("Bringing on the news...");
 			
-			var message = {};
-			message.textcolor = choose(["red", "blue", "yellow"]);
-			
-			pusher.trigger('test_channel', 'text', message);	
-	
+			var messages = [];
+
 			for (var i = 0; i < news.length; i++) {
-				message.message = news[i].category + " - " + news[i].text;			
-				pusher.trigger('test_channel', 'text', message);	
+				var message = {};
+				message.type = "text";
+				message.textcolor = choose(["red", "blue", "yellow", "magenta"]);
+				message.message = news[i].category;
+				messages.push(message);
+				
+				message.message = news[i].text;
+				messages.push(message);
+				
 			}
+			
+			pusher.trigger('test_channel', 'message', messages);	
 		});
 		
 	}
