@@ -436,7 +436,12 @@ schedulePing();
 enableTwitter();
 scheduleAnimations();
 
-console.log(new Date());
+{
+	var now = new Date();
+	var text = {};
+	text.message = sprintf("Klockan är %02d:%02d", now.getHours(), now.getMinutes());
+	pusher.trigger('test_channel', 'text', text);	
+}
 
 /*
 function db(ws) {
