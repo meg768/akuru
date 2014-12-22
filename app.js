@@ -164,7 +164,7 @@ function main() {
 					continue;		
 				}
 				
-				addCmd(sprintf('./run-text "%s" -c blue', text));
+				addCmd(sprintf('./run-text "%s" -c red', text));
 			} 
 	
 		});
@@ -194,7 +194,7 @@ function main() {
 
 					messages.push({
 						message: profileName,
-						textcolor: "blue"
+						textcolor: "red"
 					});
 
 					messages.push({
@@ -260,7 +260,7 @@ function main() {
 				var messages = [];
 				var message = {};
 				var now = new Date();
-				var color = choose(["red", "blue"]);
+				var color = choose(["red", "red"]);
 				
 				messages.push({
 					message: sprintf("%02d:%02d Nyhetsflöde från %s ", now.getHours(), now.getMinutes(), feedName),
