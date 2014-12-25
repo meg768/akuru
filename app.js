@@ -17,10 +17,6 @@ function main() {
 		return Math.floor(Math.random() * (max - min + 1)) + min;
 	}
 	
-	function choose() {
-		return arguments[rand(0, arguments.length - 1)];
-	}
-	
 	function choose(items) {
 		return items[Math.floor((Math.random() * items.length))];
 	}
@@ -212,7 +208,7 @@ function main() {
 	};
 	
 	
-	function enableRSS(url, feedName, repeat) {
+	function enableRSS(url, feedName) {
 		var feedsub = require('feedsub');
 		var schedule = require('node-schedule');
 	
@@ -242,15 +238,18 @@ function main() {
 					return a.date.valueOf() - b.date.valueOf();
 				});
 			
-				news.splice(0, news.length - 3);		
+				news.splice(0, news.length - 5);		
 			}
 		
 		});
 		
 		reader.start();
 	
-		var rule = new schedule.RecurrenceRule();
-		rule.minute = repeat;
+		var displayTime = rand(0, 59);
+		
+		var rule = new schedule.RecurrenceRule();		
+		rule.minute = [displayTime, displayTime % 60];
+		rule.hour = [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
 		
 		schedule.scheduleJob(rule, function() {
 	
@@ -443,10 +442,10 @@ function main() {
 
 	startExpress();
 		
-	enableRSS('http://www.svd.se/?service=rss&type=latest', "SvD", [2, 2+15, 2+30, 2+45]);
-	enableRSS('http://www.sydsvenskan.se/rss.xml', "SDS", [5, 5+15, 5+30, 5+45]);
-	enableRSS('http://www.di.se/rss', "DI", [8, 8+15, 8+30, 8+45]);
-	enableRSS('http://news.google.com/news?pz=1&cf=all&ned=sv_se&hl=sv&topic=h&num=3&output=rss', "Google", [10, 10+15, 10+30, 10+45]);
+	enableRSS('http://www.svd.se/?service=rss&type=latest', "SvD");
+	enableRSS('http://www.sydsvenskan.se/rss.xml', "SDS");
+	enableRSS('http://www.di.se/rss', "DI");
+	enableRSS('http://news.google.com/news?pz=1&cf=all&ned=sv_se&hl=sv&topic=h&num=3&output=rss', "Google");
 
 	schedulePing();
 	enableTwitter();
