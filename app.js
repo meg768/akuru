@@ -212,9 +212,6 @@ function main() {
 		var feedsub = require('feedsub');
 		var schedule = require('node-schedule');
 	
-		if (repeat == undefined)
-			repeat = [5, 15, 25, 35, 45, 55];
-			
 		var news = [];
 		
 		var reader = new feedsub(url, {
