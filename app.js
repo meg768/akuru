@@ -190,12 +190,12 @@ function main() {
 
 					messages.push({
 						message: profileName,
-						textcolor: "red"
+						textcolor: "blue"
 					});
 
 					messages.push({
 						message: text,
-						textcolor: "red"
+						textcolor: "blue"
 					});
 
 					pusher.trigger('test_channel', 'text', messages);	
@@ -259,7 +259,7 @@ function main() {
 				var color = choose(["red", "red"]);
 				
 				messages.push({
-					message: sprintf("%02d:%02d Nyhetsflöde från %s ", now.getHours(), now.getMinutes(), feedName),
+					message: sprintf("%02d:%02d RSS från %s ", now.getHours(), now.getMinutes(), feedName),
 					textcolor: color
 				});
 				
@@ -452,6 +452,7 @@ function main() {
 		var now = new Date();
 		var text = {};
 		text.message = sprintf("Klockan är %02d:%02d", now.getHours(), now.getMinutes());
+		text.textcolor = "blue";
 		pusher.trigger('test_channel', 'text', text);	
 	}
 	
