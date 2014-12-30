@@ -190,7 +190,7 @@ function main() {
 					var messages = []; 
 
 					messages.push({
-						message: sprintf('%02d:%02d - Twitter - %s - %s', now.getHours(), now.getMinutes(), profileName, text);
+						message: sprintf('%02d:%02d - Twitter - %s - %s', now.getHours(), now.getMinutes(), profileName, text),
 						textcolor: "blue"
 					});
 
