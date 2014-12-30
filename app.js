@@ -399,7 +399,7 @@ function main() {
 		var express = require("express");
 		var bodyParser = require('body-parser');
 		var app = express();
-		var port = 3000; //process.env.PORT || 5000;
+		var port = 5000; //process.env.PORT || 5000;
 	
 		app.use(express.static(__dirname + "/"))
 		app.use(bodyParser.json());
@@ -465,7 +465,7 @@ function main() {
 			try {
 				var json = JSON.parse(message);
 				bot.sendMessage(from, "JSON!");
-				sendMessage('text', json);
+				sendMessage('message', json);
 			}
 			catch (error) {
 				sendMessage('text', { message:message});
