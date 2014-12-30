@@ -245,7 +245,7 @@ function main() {
 		var displayTime = rand(0, 59);
 		
 		var rule = new schedule.RecurrenceRule();		
-		rule.minute = [displayTime, displayTime % 60];
+		rule.minute = [displayTime, (displayTime + 30) % 60];
 		rule.hour = [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
 		
 		schedule.scheduleJob(rule, function() {
@@ -256,7 +256,7 @@ function main() {
 				var messages = [];
 				var message = {};
 				var now = new Date();
-				var color = choose(["red", "red"]);
+				var color = "red";
 				
 				messages.push({
 					message: sprintf("%02d:%02d RSS från %s ", now.getHours(), now.getMinutes(), feedName),
