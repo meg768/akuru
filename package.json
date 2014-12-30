@@ -1,4 +1,4 @@
-	{
+{
   "name": "node-ws-test",
   "version": "0.0.1",
   "repository": {
@@ -12,7 +12,8 @@
     "node-schedule": "~0.1.13",
     "pg": "3.4.4",
     "pusher": "~1.0.1",
-    "twit": "~1.1.18"
+    "twit": "~1.1.18",
+    "hangouts-bot": "~0.1.0"
   },
   "engines": {
     "node": "0.10.x"

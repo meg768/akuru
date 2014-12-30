@@ -433,8 +433,23 @@ function main() {
 		
 	}
 
-	startExpress();
+	function enableGoogleTalk() {
+		var hangoutsBot = require("hangouts-bot");
+		var bot = new hangoutsBot("golvettippar@gmail.com", "potatismos");
 		
+		bot.on('online', function() {
+		    console.log('online');
+		});
+		
+		bot.on('message', function(from, message) {
+		    console.log(from + ">> " + message);
+		});		
+	}
+	
+	startExpress();
+	
+	enableGoogleTalk();
+
 	enableRSS('http://www.svd.se/?service=rss&type=latest', "SvD");
 	enableRSS('http://www.sydsvenskan.se/rss.xml', "SDS");
 	enableRSS('http://www.di.se/rss', "DI");
@@ -451,7 +466,7 @@ function main() {
 		text.textcolor = "blue";
 		pusher.trigger('test_channel', 'text', text);	
 	}
-	
+
 }
 
 main();
