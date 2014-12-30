@@ -1,18 +1,26 @@
 var http = require("http");
-
+var socketIO, server;
 
 function main() {
-	var Pusher = require('pusher');
+	//var Pusher = require('pusher');
 
 	// Set my time zone
 	process.env.TZ = 'Europe/Stockholm';
 
+	/*
 	var pusher = new Pusher({ 
 		appId: '90574',
 		key: '062bc67be8d42e4ded9b',
 		secret: '4f7560f8aa5001483c7f'
 	});
 
+	*/
+	
+	function sendMessage(event, data) {
+		console.log('Sending event "%s"', event, data);
+		socketIO.sockets.emit(event, data);
+	}
+	
 	function rand(min, max) {
 		return Math.floor(Math.random() * (max - min + 1)) + min;
 	}
@@ -71,7 +79,7 @@ function main() {
 
 
 	function addCmd(cmd) {
-		pusher.trigger('test_channel', 'command', cmd);	
+		sendMessage('command', cmd);	
 	}
 	
 	function enableTwitter() {
@@ -194,7 +202,7 @@ function main() {
 						textcolor: "blue"
 					});
 
-					pusher.trigger('test_channel', 'text', messages);	
+					sendMessage('text', messages);	
 				}
 				
 			}		
@@ -266,7 +274,7 @@ function main() {
 					});
 				}
 				
-				pusher.trigger('test_channel', 'text', messages);	
+				sendMessage('text', messages);	
 				
 			}
 		});
@@ -387,11 +395,11 @@ function main() {
 		});
 	}
 
-	function startExpress() {
+	function startServer() {
 		var express = require("express");
 		var bodyParser = require('body-parser');
 		var app = express();
-		var port = process.env.PORT || 5000;
+		var port = 3000; //process.env.PORT || 5000;
 	
 		app.use(express.static(__dirname + "/"))
 		app.use(bodyParser.json());
@@ -400,14 +408,14 @@ function main() {
 		
 		var server = http.createServer(app);
 		
+		
 		server.listen(port, function() {
 			console.log("Server is listening...");
 		});
 		
-		
 		app.post('/text', function(request, response) {
 			console.log(request.body);
-			pusher.trigger('test_channel', 'text', request.body);	
+			sendMessage('text', request.body);	
 			response.send("OK");
 		});
 		
@@ -427,9 +435,16 @@ function main() {
 		})
 		
 		
+		return server;
+		/*
 		app.listen(app.get('port'), function() {
 			console.log("Node app is running...");
 		})
+		*/
+		
+		//server.listen(port, function() {
+		//	console.log("Server listening...");
+		//});
 		
 	}
 
@@ -443,19 +458,17 @@ function main() {
 		
 		bot.on('message', function(from, message) {
 			var text = {}; 
-			//text.message = message;
-			//text.textcolor = "blue";
-			//pusher.trigger('test_channel', 'text', text);	
 
 			message = message.replace(new RegExp('”', 'g'), '"');
 			console.log(from, message);
-						from = "magnus.egelberg@gmail.com";
 						
 			try {
 				var json = JSON.parse(message);
 				bot.sendMessage(from, "JSON!");
+				sendMessage('text', json);
 			}
 			catch (error) {
+				sendMessage('text', { message:message});
 				bot.sendMessage(from, "TEXT!");
 				
 			}
@@ -463,8 +476,22 @@ function main() {
 		});		
 	}
 	
-	startExpress();
-	enableGoogleTalk();
+	function startSocketIO(server) {
+		var io = require('socket.io')(server);
+		
+		io.on('connection', function(socket) {
+			console.log("Connection!");
+			socket.emit('welcomeevent', { some: 'data' });
+			console.log("welcome sent");
+		});
+
+		return io;
+				
+		
+	}
+	
+	server = startServer();	
+	socketIO = startSocketIO(server);
 	
 	enableRSS('http://www.svd.se/?service=rss&type=latest', "SvD");
 	enableRSS('http://www.sydsvenskan.se/rss.xml', "SDS");
@@ -482,7 +509,7 @@ function main() {
 		var text = {};
 		text.message = sprintf("Klockan är %02d:%02d", now.getHours(), now.getMinutes());
 		text.textcolor = "blue";
-		pusher.trigger('test_channel', 'text', text);	
+		sendMessage('text', text);	
 	}
 
 
