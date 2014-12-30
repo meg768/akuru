@@ -135,7 +135,7 @@ function main() {
 				match = text.match(/\s*@animation\s+([^-]\S+)(.*)/);
 				
 				if (match != null) {
-					addCmd(sprintf('./run-animation images/%s.gif %s', match[1], match[2]));
+					addCmd(sprintf('./run-animation animations/%s.gif %s', match[1], match[2]));
 					continue;
 				}
 				
@@ -305,7 +305,7 @@ function main() {
 		rule.minute = rand(0, 59);
 		
 		schedule.scheduleJob(rule, function() {
-			addCmd(sprintf('./run-animation images/pacman.gif'));
+			addCmd(sprintf('./run-animation animations/pacman.gif'));
 		});		
 
 		rule = new schedule.RecurrenceRule();
@@ -313,7 +313,7 @@ function main() {
 		rule.minute = rand(0, 59);
 		
 		schedule.scheduleJob(rule, function() {
-			addCmd(sprintf('./run-animation images/fireplace.gif -d 30'));
+			addCmd(sprintf('./run-animation animations/fireplace.gif -d 30'));
 		});		
 
 		rule = new schedule.RecurrenceRule();
@@ -321,7 +321,7 @@ function main() {
 		rule.minute = rand(0, 59);
 		
 		schedule.scheduleJob(rule, function() {
-			addCmd(sprintf('./run-animation images/bubbles.gif -d 30'));
+			addCmd(sprintf('./run-animation animations/bubbles.gif -d 30'));
 		});		
 
 		rule = new schedule.RecurrenceRule();
@@ -329,7 +329,7 @@ function main() {
 		rule.minute = rand(0, 59);
 		
 		schedule.scheduleJob(rule, function() {
-			addCmd(sprintf('./run-animation images/tree.gif'));
+			addCmd(sprintf('./run-animation animations/tree.gif'));
 		});		
 
 
