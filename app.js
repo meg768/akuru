@@ -185,16 +185,12 @@ function main() {
 					var profileImageUrl = tweet.user.profile_image_url;
 					var profileName = tweet.user.name;
 					var profileScreenName = tweet.user.screen_name;
-		
+					var now = new Date();
+					
 					var messages = []; 
 
 					messages.push({
-						message: profileName,
-						textcolor: "blue"
-					});
-
-					messages.push({
-						message: text,
+						message: sprintf('%02d:%02d - Twitter - %s - %s', now.getHours(), now.getMinutes(), profileName, text);
 						textcolor: "blue"
 					});
 
@@ -259,7 +255,7 @@ function main() {
 				var color = "red";
 				
 				messages.push({
-					message: sprintf("%02d:%02d RSS från %s ", now.getHours(), now.getMinutes(), feedName),
+					message: sprintf("%02d:%02d - RSS - %s ", now.getHours(), now.getMinutes(), feedName),
 					textcolor: color
 				});
 				
