@@ -442,14 +442,15 @@ function main() {
 		});
 		
 		bot.on('message', function(from, message) {
-		    console.log(from + ">> " + message);
+			var text = {};
+			text.message = message;
+			text.textcolor = "blue";
+			pusher.trigger('test_channel', 'text', text);	
 		});		
 	}
 	
 	startExpress();
 	
-	enableGoogleTalk();
-
 	enableRSS('http://www.svd.se/?service=rss&type=latest', "SvD");
 	enableRSS('http://www.sydsvenskan.se/rss.xml', "SDS");
 	enableRSS('http://www.di.se/rss', "DI");
@@ -458,6 +459,8 @@ function main() {
 	schedulePing();
 	enableTwitter();
 	scheduleAnimations();
+	enableGoogleTalk();
+
 
 	{
 		var now = new Date();
