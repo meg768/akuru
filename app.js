@@ -442,14 +442,29 @@ function main() {
 		});
 		
 		bot.on('message', function(from, message) {
-			var text = {};
-			text.message = message;
-			text.textcolor = "blue";
-			pusher.trigger('test_channel', 'text', text);	
+			var text = {}; 
+			//text.message = message;
+			//text.textcolor = "blue";
+			//pusher.trigger('test_channel', 'text', text);	
+
+			message = message.replace(new RegExp('”', 'g'), '"');
+			console.log(from, message);
+						from = "magnus.egelberg@gmail.com";
+						
+			try {
+				var json = JSON.parse(message);
+				bot.sendMessage(from, "JSON!");
+			}
+			catch (error) {
+				bot.sendMessage(from, "TEXT!");
+				
+			}
+
 		});		
 	}
 	
 	startExpress();
+	enableGoogleTalk();
 	
 	enableRSS('http://www.svd.se/?service=rss&type=latest', "SvD");
 	enableRSS('http://www.sydsvenskan.se/rss.xml', "SDS");
@@ -469,6 +484,7 @@ function main() {
 		text.textcolor = "blue";
 		pusher.trigger('test_channel', 'text', text);	
 	}
+
 
 }
 
