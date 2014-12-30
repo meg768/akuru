@@ -2,23 +2,19 @@ var http = require("http");
 var socketIO, server;
 
 function main() {
-	//var Pusher = require('pusher');
 
 	// Set my time zone
 	process.env.TZ = 'Europe/Stockholm';
 
-	/*
-	var pusher = new Pusher({ 
-		appId: '90574',
-		key: '062bc67be8d42e4ded9b',
-		secret: '4f7560f8aa5001483c7f'
-	});
-
-	*/
 	
 	function sendMessage(event, data) {
-		console.log('Sending event "%s"', event, data);
-		socketIO.sockets.emit(event, data);
+		try {
+			console.log('Sending event "%s"', event, data);
+			socketIO.sockets.emit(event, data);
+		}
+		catch (error) {
+			console.log('Sending event "%s" failed.', event, data);			
+		}
 	}
 	
 	function rand(min, max) {
@@ -405,24 +401,21 @@ function main() {
 		app.use(bodyParser.json());
 		app.use(bodyParser.urlencoded({ extended: true }));
 		
-		
 		var server = http.createServer(app);
 		
-		
 		server.listen(port, function() {
-			console.log("Server is listening...");
+			console.log("Server is listening on port %d...", port);
 		});
 		
 		app.post('/text', function(request, response) {
-			console.log(request.body);
 			sendMessage('text', request.body);	
 			response.send("OK");
 		});
-		
-		app.get('/', function(request, response) {
-		  response.json({message:'Hello World!' , postgres:process.env.DATABASE_URL, port:process.env.PORT});
-		
-		})
+
+		app.post('/message', function(request, response) {
+			sendMessage('message', request.body);	
+			response.send("OK");
+		});
 		
 		app.get('/hello', function(request, response) {
 		
@@ -436,17 +429,8 @@ function main() {
 		
 		
 		return server;
-		/*
-		app.listen(app.get('port'), function() {
-			console.log("Node app is running...");
-		})
-		*/
-		
-		//server.listen(port, function() {
-		//	console.log("Server listening...");
-		//});
-		
 	}
+
 
 	function enableGoogleTalk() {
 		var hangoutsBot = require("hangouts-bot");
