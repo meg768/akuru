@@ -448,12 +448,12 @@ function main() {
 						
 			try {
 				var json = JSON.parse(message);
-				bot.sendMessage(from, "JSON!");
+				bot.sendMessage(from, "OK, one moment...");
 				sendMessage('message', json);
 			}
 			catch (error) {
 				sendMessage('text', { message:message});
-				bot.sendMessage(from, "TEXT!");
+				bot.sendMessage(from, sprintf("OK, %s", message);
 				
 			}
 
