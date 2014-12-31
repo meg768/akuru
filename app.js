@@ -453,7 +453,7 @@ function main() {
 			}
 			catch (error) {
 				sendMessage('text', { message:message});
-				bot.sendMessage(from, sprintf("OK, %s", message);
+				bot.sendMessage(from, sprintf("OK, %s", message));
 				
 			}
 
