@@ -436,6 +436,9 @@ function main() {
 		var hangoutsBot = require("hangouts-bot");
 		var bot = new hangoutsBot("golvettippar@gmail.com", "potatismos");
 		
+		bot.connection.socket.setTimeout(0);
+		bot.connection.socket.setKeepAlive(true, 10000);
+		
 		bot.on('online', function() {
 		    console.log('online');
 		});
