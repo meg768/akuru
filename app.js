@@ -470,9 +470,7 @@ function main() {
 		var io = require('socket.io')(server);
 		
 		io.on('connection', function(socket) {
-			console.log("Connection!");
-			socket.emit('welcomeevent', { some: 'data' });
-			console.log("welcome sent");
+			console.log("Socket IO Connection!");
 		});
 
 		return io;
