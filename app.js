@@ -528,7 +528,7 @@ function main() {
 				sendMessage('message', json);
 			}
 			catch (error) {
-				runCmd('command', message);
+				runCmd(message);
 				bot.sendMessage(from, sprintf("OK, %s", message));
 				
 			}
