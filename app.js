@@ -77,7 +77,77 @@ function main() {
 	function addCmd(cmd) {
 		sendMessage('command', cmd);	
 	}
-	
+
+
+	function runCmd(text) {
+		var match = null;
+		
+		match = text.match(/\s*@perlin\s*(.*)/);
+		
+		if (match != null) {
+			addCmd(sprintf('./run-perlin %s', match[1]));
+			return;
+		}
+
+		match = text.match(/\s*@circle\s*(.*)/);
+		
+		if (match != null) {
+			addCmd(sprintf('./run-circle %s', match[1]));
+			return;
+		}
+		
+		match = text.match(/\s*@life\s*(.*)/);
+		
+		if (match != null) {
+			addCmd(sprintf('./run-life %s', match[1]));
+			return;
+		}
+
+		match = text.match(/\s*@wipe\s*(.*)/);
+		
+		if (match != null) {
+			addCmd(sprintf('./run-wipe %s', match[1]));
+			return;
+		}
+
+		match = text.match(/\s*@clock\s*(.*)/);
+		
+		if (match != null) {
+			addCmd(sprintf('./run-clock %s', match[1]));
+			return;
+		}
+		
+		match = text.match(/\s*@animation\s+([^-]\S+)(.*)/);
+		
+		if (match != null) {
+			addCmd(sprintf('./run-animation animations/%s.gif %s', match[1], match[2]));
+			return;
+		}
+		
+		match = text.match(/\s*@image\s+([^-]\S+)(.*)/);
+		
+		if (match != null) {
+			addCmd(sprintf('./run-image images/%s.png %s', match[1], match[2]));
+			return;
+		}
+
+		match = text.match(/\s*@reboot/);
+		
+		if (match != null) {
+			addCmd('reboot');
+			return;
+		}
+
+		match = text.match('^[ ]*\./run-.+');
+
+		if (match != null) {
+			addCmd(text);			
+			return;		
+		}
+		
+		addCmd(sprintf('./run-text "%s" -c red', text));
+	}	
+
 	function enableTwitter() {
 		var twitterOptions = {};	
 		twitterOptions.consumer_key = 'RMvVK1wDXgftuFqVwMZA1OmEG';
@@ -449,7 +519,7 @@ function main() {
 		bot.on('message', function(from, message) {
 			var text = {}; 
 
-			message = message.replace(new RegExp('”', 'g'), '"');
+			message = message.replace(new RegExp('"', 'g'), '”');
 			console.log(from, message);
 						
 			try {
@@ -458,7 +528,7 @@ function main() {
 				sendMessage('message', json);
 			}
 			catch (error) {
-				sendMessage('text', { message:message});
+				runCmd('command', message);
 				bot.sendMessage(from, sprintf("OK, %s", message));
 				
 			}
