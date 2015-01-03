@@ -78,7 +78,7 @@ function main() {
 		var args = cmd.split(' ');
 		var name = args[0];
 		
-		args.shift(();
+		args.shift();
 		
 		sendMessage('command', {name:name, args:args});	
 	}
