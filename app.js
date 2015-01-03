@@ -282,7 +282,11 @@ function main() {
 		rule.hour = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22];
 		
 		schedule.scheduleJob(rule, function() {
-			addCmd(sprintf('./run-perlin -d 60'));
+			sendMessage('message', {
+				type: 'command',
+				name: './run-perlin',
+				duration: 60
+			});
 		});	
 
 		rule = new schedule.RecurrenceRule();
@@ -290,7 +294,11 @@ function main() {
 		rule.minute = rand(0, 59);
 		
 		schedule.scheduleJob(rule, function() {
-			addCmd(sprintf('./run-circle -d 30'));
+			sendMessage('message', {
+				type: 'command',
+				name: './run-circle',
+				duration: 60
+			});
 		});		
 
 		rule = new schedule.RecurrenceRule();
@@ -298,7 +306,11 @@ function main() {
 		rule.minute = rand(0, 59);
 		
 		schedule.scheduleJob(rule, function() {
-			addCmd(sprintf('./run-life -d 30'));
+			sendMessage('message', {
+				type: 'command',
+				name: './run-life',
+				duration: 60
+			});
 		});		
 
 		rule = new schedule.RecurrenceRule();
@@ -306,7 +318,10 @@ function main() {
 		rule.minute = rand(0, 59);
 		
 		schedule.scheduleJob(rule, function() {
-			addCmd(sprintf('./run-animation animations/pacman.gif'));
+			sendMessage('animation', {
+				name: 'pacman.gif',
+				duration: 60
+			});
 		});		
 
 		rule = new schedule.RecurrenceRule();
@@ -314,7 +329,10 @@ function main() {
 		rule.minute = rand(0, 59);
 		
 		schedule.scheduleJob(rule, function() {
-			addCmd(sprintf('./run-animation animations/fireplace.gif -d 30'));
+			sendMessage('animation', {
+				name: 'fireplace.gif',
+				duration: 60
+			});
 		});		
 
 		rule = new schedule.RecurrenceRule();
@@ -322,7 +340,10 @@ function main() {
 		rule.minute = rand(0, 59);
 		
 		schedule.scheduleJob(rule, function() {
-			addCmd(sprintf('./run-animation animations/bubbles.gif -d 30'));
+			sendMessage('animation', {
+				name: 'bubbles.gif',
+				duration: 60
+			});
 		});		
 
 		rule = new schedule.RecurrenceRule();
@@ -330,7 +351,10 @@ function main() {
 		rule.minute = rand(0, 59);
 		
 		schedule.scheduleJob(rule, function() {
-			addCmd(sprintf('./run-animation animations/tree.gif'));
+			sendMessage('animation', {
+				name: 'tree.gif',
+				iterations: 1
+			});
 		});		
 
 
@@ -339,7 +363,10 @@ function main() {
 		rule.minute = rand(0, 59);
 		
 		schedule.scheduleJob(rule, function() {
-			addCmd(sprintf('./run-twinkle -d 30'));
+			sendMessage('command', {
+				name: './run-twinkle',
+				args: ['-d', 60]
+			});
 		});		
 
 		rule = new schedule.RecurrenceRule();
@@ -348,17 +375,15 @@ function main() {
 		
 		schedule.scheduleJob(rule, function() {
 			var now = new Date();		
-			addCmd(sprintf('./run-text "%02d:%02d" -i 2 -c red', now.getHours(), now.getMinutes()));
+
+			sendMessage('text', {
+				message: sprintf('%02d:%02d', now.getHours(), now.getMinutes()),
+				textcolor: 'red',
+				iterations: 2
+			});
+
 		});		
 
-		rule = new schedule.RecurrenceRule();
-		rule.hour = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22];
-		rule.minute = 10;
-		
-		schedule.scheduleJob(rule, function() {
-			var now = new Date();		
-			addCmd(sprintf('./run-image images/smiley.png -s '));
-		});		
 
 	}
 
