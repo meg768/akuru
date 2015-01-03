@@ -524,7 +524,7 @@ function main() {
 		bot.on('message', function(from, message) {
 			var text = {}; 
 
-			message = message.replace(new RegExp('"', 'g'), '”');
+			message = message.replace(new RegExp('”', 'g'), '"');
 			console.log(from, message);
 						
 			try {
@@ -533,6 +533,7 @@ function main() {
 				sendMessage('message', json);
 			}
 			catch (error) {
+				message = message.replace(new RegExp('"', 'g'), '”');
 				runCmd(message);
 				bot.sendMessage(from, sprintf("OK, %s", message));
 				
