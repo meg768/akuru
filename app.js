@@ -75,7 +75,12 @@ function main() {
 
 
 	function addCmd(cmd) {
-		sendMessage('command', cmd);	
+		var args = cmd.split(' ');
+		var name = args[0];
+		
+		args.shift(();
+		
+		sendMessage('command', {name:name, args:args});	
 	}
 
 
