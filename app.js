@@ -285,7 +285,7 @@ function main() {
 			sendMessage('message', {
 				type: 'command',
 				name: './run-perlin',
-				duration: 60
+				args: ['-d', 60]
 			});
 		});	
 
@@ -297,7 +297,7 @@ function main() {
 			sendMessage('message', {
 				type: 'command',
 				name: './run-circle',
-				duration: 60
+				args: ['-d', 60]
 			});
 		});		
 
@@ -309,7 +309,7 @@ function main() {
 			sendMessage('message', {
 				type: 'command',
 				name: './run-life',
-				duration: 60
+				args: ['-d', 60]
 			});
 		});		
 
