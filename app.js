@@ -483,7 +483,7 @@ function main() {
 			bot.connection.connection.socket.setTimeout(0);
 			bot.connection.connection.socket.setKeepAlive(true, 10000);
 
-			sendMessage('text', {message:'Google Talk online...');	
+			sendMessage('text', {message:'Google Talk online...'});	
 
 		    console.log('Google Talk online...');
 		});
