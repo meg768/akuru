@@ -483,7 +483,9 @@ function main() {
 			bot.connection.connection.socket.setTimeout(0);
 			bot.connection.connection.socket.setKeepAlive(true, 10000);
 
-		    console.log('online');
+			sendMessage('text', {message:'Google Talk online...');	
+
+		    console.log('Google Talk online...');
 		});
 		
 		bot.on('message', function(from, message) {
@@ -507,31 +509,34 @@ function main() {
 		});		
 	}
 	
-	function startSocketIO(server) {
+	function startSocketIO(server, connected) {
 		var io = require('socket.io')(server);
 		
 		io.on('connection', function(socket) {
+			connected();
 			console.log("Socket IO Connection!");
 		});
 
 		return io;
-				
-		
 	}
 	
 	server = startServer();	
-	socketIO = startSocketIO(server);
+
+	socketIO = startSocketIO(server, function() {
+		enableRSS('http://www.svd.se/?service=rss&type=latest', "SvD");
+		enableRSS('http://www.sydsvenskan.se/rss.xml', "SDS");
+		enableRSS('http://www.di.se/rss', "DI");
+		enableRSS('http://news.google.com/news?pz=1&cf=all&ned=sv_se&hl=sv&topic=h&num=3&output=rss', "Google");
 	
-	enableRSS('http://www.svd.se/?service=rss&type=latest', "SvD");
-	enableRSS('http://www.sydsvenskan.se/rss.xml', "SDS");
-	enableRSS('http://www.di.se/rss', "DI");
-	enableRSS('http://news.google.com/news?pz=1&cf=all&ned=sv_se&hl=sv&topic=h&num=3&output=rss', "Google");
-
-	schedulePing();
-	enableTwitter();
-	scheduleAnimations();
-	enableGoogleTalk();
-
+		schedulePing();
+		enableTwitter();
+		scheduleAnimations();
+		enableGoogleTalk();
+	
+		
+		
+	});
+	
 
 	{
 		var now = new Date();
