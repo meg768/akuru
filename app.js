@@ -578,6 +578,7 @@ function main() {
 	
 		schedulePing();
 		enableTwitter();
+		enableStockQuotes();
 		scheduleAnimations();
 		enableGoogleTalk();
 	
