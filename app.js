@@ -465,9 +465,9 @@ function main() {
 					var percentOmsattning = 100 * ((quote.Volume / quote.AverageDailyVolume) - 1);
 					var text = '';
 					
-					text += quote.symbol + ' ';;
-					text += percentPris > 0 ? sprintf('+%.1f%% ', percentPris) : sprintf('%.1f%% ', percentPris);
-					text += percentOmsattning > 0 ? sprintf('+%.0f%%', percentOmsattning) : sprintf('%.0f%%', percentOmsattning);
+					text += quote.symbol + ' ';
+					text += percentPris > 0 ? sprintf('+%.1f ', percentPris) : sprintf('%.1f ', percentPris);
+					text += percentOmsattning > 0 ? sprintf('(+%.0f%%)', percentOmsattning) : sprintf('(%.0f%%)', percentOmsattning);
 					
 					display(text);
 				}
