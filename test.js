@@ -13,7 +13,6 @@
 
 
 
-
 function enableStockQuotes() {
 	var rule, schedule = require('node-schedule');
 
@@ -74,18 +73,14 @@ function enableStockQuotes() {
 		});
 	}
 
-
-	rule = new schedule.RecurrenceRule();
-	rule.minute = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 3, 34, 35, 36, 37, 38, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59];
-//	rule.hour = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22];
 	
-	schedule.scheduleJob(rule, function() {
-		getStockQuotes(['AAPL', 'PHI.ST', 'HM-B.ST', 'ARCC', 'NCC-B.ST', 'INDU-C.ST', 'SHB-B.ST'], function(quotes) {
+	function foo() {
+		getStockQuotes(['AAPL', 'PHI.ST', 'HM-B.ST', 'ARCC', 'NCC-B.ST', 'INDU-C.ST', 'SHB-B.ST', 'COS.TO', 'CAST.ST'], function(quotes) {
 		
 			
 			for (var index in quotes) {
 				var quote = quotes[index];
-				var percentPris = (((quote.LastTradePriceOnly - quote.Change) / quote.LastTradePriceOnly) - 1) * 100;
+				var percentPris = (1 - ((quote.LastTradePriceOnly - quote.Change) / quote.LastTradePriceOnly)) * 100;
 				var percentOmsattning = 100 * ((quote.Volume / quote.AverageDailyVolume) - 1);
 				var text = '';
 				
@@ -98,6 +93,17 @@ function enableStockQuotes() {
 		
 			
 		});
+		
+	}
+
+	foo();
+	
+	rule = new schedule.RecurrenceRule();
+	rule.minute = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 3, 34, 35, 36, 37, 38, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59];
+//	rule.hour = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22];
+	
+	schedule.scheduleJob(rule, function() {
+		foo();
 	});	
 	
 }

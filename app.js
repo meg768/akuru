@@ -456,18 +456,18 @@ function main() {
 		rule.hour = [9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
 		
 		schedule.scheduleJob(rule, function() {
-			getStockQuotes(['AAPL', 'PHI.ST', 'HM-B.ST', 'ARCC', 'NCC-B.ST', 'INDU-C.ST', 'SHB-B.ST'], function(quotes) {
+			getStockQuotes(['PFE', 'PHI.ST', 'HM-B.ST', 'ARCC', 'NCC-B.ST', 'INDU-C.ST', 'SHB-B.ST', 'COS.TO', 'CAST.ST'], function(quotes) {
 			
 				
 				for (var index in quotes) {
 					var quote = quotes[index];
-					var percentPris = (((quote.LastTradePriceOnly - quote.Change) / quote.LastTradePriceOnly) - 1) * 100;
+					var percentPris = (1 - ((quote.LastTradePriceOnly - quote.Change) / quote.LastTradePriceOnly)) * 100;
 					var percentOmsattning = 100 * ((quote.Volume / quote.AverageDailyVolume) - 1);
 					var text = '';
 					
-					text += quote.symbol + ' ';
-					text += percentPris > 0 ? sprintf('+%.1f ', percentPris) : sprintf('%.1f ', percentPris);
-					text += percentOmsattning > 0 ? sprintf('(+%.0f%%)', percentOmsattning) : sprintf('(%.0f%%)', percentOmsattning);
+					text += quote.symbol + ' ';;
+					text += percentPris > 0 ? sprintf('+%.2f%% ', percentPris) : sprintf('%.2f%% ', percentPris);
+					text += percentOmsattning > 0 ? sprintf('+%.0f%%', percentOmsattning) : sprintf('%.0f%%', percentOmsattning);
 					
 					display(text);
 				}
