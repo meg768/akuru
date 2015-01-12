@@ -75,24 +75,24 @@ function enableStockQuotes() {
 
 	
 	function foo() {
-		getStockQuotes(['PFE', 'PHI.ST', 'HM-B.ST', 'ARCC', 'NCC-B.ST', 'INDU-C.ST', 'SHB-B.ST', 'COS.TO', 'CAST.ST'], function(quotes) {
-		
+			getStockQuotes(['PFE', 'PHI.ST', 'HM-B.ST', 'ARCC', 'NCC-B.ST', 'INDU-C.ST', 'SHB-B.ST', 'COS.TO', 'CAST.ST'], function(quotes) {
 			
-			for (var index in quotes) {
-				var quote = quotes[index];
-				var percentPris = (1 - ((quote.LastTradePriceOnly - quote.Change) / quote.LastTradePriceOnly)) * 100;
-				var percentOmsattning = 100 * ((quote.Volume / quote.AverageDailyVolume) - 1);
-				var text = '';
 				
-				text += quote.symbol + ' ';;
-				text += percentPris > 0 ? sprintf('+%.2f%% ', percentPris) : sprintf('%.2f%% ', percentPris);
-				text += percentOmsattning > 0 ? sprintf('+%.0f%%', percentOmsattning) : sprintf('%.0f%%', percentOmsattning);
-				
-				display(text);
-			}
-		
+				for (var index in quotes) {
+					var quote = quotes[index];
+					var percentPrice = (1 - ((quote.LastTradePriceOnly - quote.Change) / quote.LastTradePriceOnly)) * 100;
+					var percentVolume = 100 * ((quote.Volume / quote.AverageDailyVolume) - 1);
+					var text = '';
+					
+					text += quote.symbol + ' ';;
+					text += percentPrice > 0 ? sprintf('+%.1f%% ', percentPrice) : sprintf('%.1f%% ', percentPrice);
+					text += percentVolume > 0 ? sprintf('(+%.0f%%)', percentVolume) : sprintf('(%.0f%%)', percentVolume);
+					
+					display(text);
+				}
 			
-		});
+				
+			});
 		
 	}
 
