@@ -14,7 +14,8 @@
     "pusher": "~1.0.1",
     "twit": "~1.1.18",
     "hangouts-bot": "~0.1.0",
-    "socket.io": "~1.2.1"
+    "socket.io": "~1.2.1",
+    "request": "~2.51.0"
   },
   "engines": {
     "node": "0.10.x"
