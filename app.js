@@ -394,7 +394,7 @@ function main() {
 		function display(text) {
 			var packet = {};
 			packet.message = text;
-			packet.textcolor = "blue";
+			packet.textcolor = 'blue';
 			sendMessage('text', packet);	
 			
 		}
@@ -452,8 +452,8 @@ function main() {
 	
 	
 		rule = new schedule.RecurrenceRule();
-		rule.minute = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 3, 34, 35, 36, 37, 38, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59];
-	//	rule.hour = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22];
+		rule.minute = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55];
+		rule.hour = [9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
 		
 		schedule.scheduleJob(rule, function() {
 			getStockQuotes(['AAPL', 'PHI.ST', 'HM-B.ST', 'ARCC', 'NCC-B.ST', 'INDU-C.ST', 'SHB-B.ST'], function(quotes) {
@@ -466,7 +466,7 @@ function main() {
 					var text = '';
 					
 					text += quote.symbol + ' ';;
-					text += percentPris > 0 ? sprintf('+%.2f%% ', percentPris) : sprintf('%.2f%% ', percentPris);
+					text += percentPris > 0 ? sprintf('+%.1f%% ', percentPris) : sprintf('%.1f%% ', percentPris);
 					text += percentOmsattning > 0 ? sprintf('+%.0f%%', percentOmsattning) : sprintf('%.0f%%', percentOmsattning);
 					
 					display(text);
