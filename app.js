@@ -359,6 +359,57 @@ function main() {
 */
 
 	}
+	
+	function showNightMode() {
+		sendMessage('message', {
+			type: 'settings',
+			animation: {
+				command:'./run-clock',
+				args: ['-d', -1]
+				
+			}
+		});
+
+		
+	}
+
+	function scheduleNightMode() {
+
+		rule = new schedule.RecurrenceRule();
+		rule.hour = [1];
+
+		schedule.scheduleJob(rule, function() {
+			showNightMode();
+
+		});		
+
+		
+	}
+	
+	function showDayMode() {
+			
+		sendMessage('message', {
+			type: 'settings',
+			animation: {
+				command:'./run-rain',
+				args: ['-d', -1]
+				
+			}
+		});
+		
+	}
+
+	function scheduleDayMode() {
+
+		rule = new schedule.RecurrenceRule();
+		rule.hour = [7];
+
+		schedule.scheduleJob(rule, function() {
+			showDayMode();
+		});		
+
+		
+	}
 
 	function schedulePing() {
 		var schedule = require('node-schedule');
@@ -563,12 +614,13 @@ function main() {
 		enableRSS('http://www.di.se/rss', "DI");
 		enableRSS('http://news.google.com/news?pz=1&cf=all&ned=sv_se&hl=sv&topic=h&num=3&output=rss', "Google");
 	
-		schedulePing();
-		enableTwitter();
-		enableStockQuotes();
+		//schedulePing();
+		//enableTwitter();
+		//enableStockQuotes();
 		//scheduleAnimations();
-		enableGoogleTalk();
-		scheduleWeatherForecast();
+		//enableGoogleTalk();
+		//scheduleWeatherForecast();
+		showNightMode();
 		
 		
 	});
