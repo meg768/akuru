@@ -29,7 +29,7 @@ app.listen(3000, function() {
 				console.log(text);
 			}
 			
-			sendMessage('text', messages);
+			//sendMessage('text', messages);
 			//console.log(messages);
 			
 		});
