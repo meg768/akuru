@@ -2,6 +2,7 @@
 var app = require('express')();
 var sprintf = require('./sprintf');
 var getStockQuotes = require('./stocks');
+var config = require('./config');
 
 /*
 
@@ -13,7 +14,7 @@ app.listen(3000, function() {
 	function showStockQuotes() {
 		var getStockQuotes = require('./stocks');
 
-		getStockQuotes(['PFE', 'PHI.ST', 'HM-B.ST', 'ARCC', 'NCC-B.ST', 'INDU-C.ST', 'SHB-B.ST', 'COS.TO', 'CAST.ST'], function(quotes) {
+		getStockQuotes(config.stocks, function(quotes) {
 			var messages = [];
 						
 			for (var index in quotes) {

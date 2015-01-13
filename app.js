@@ -1,3 +1,4 @@
+var config = require('./config.js');
 var http = require("http");
 var sprintf = require('./sprintf');
 var socketIO, server;
@@ -5,7 +6,7 @@ var socketIO, server;
 function main() {
 
 	// Set my time zone
-	process.env.TZ = 'Europe/Stockholm';
+	process.env.TZ = config.timezone;
 
 	
 	function sendMessage(event, data) {
@@ -389,7 +390,7 @@ function main() {
 	function showStockQuotes() {
 		var getStockQuotes = require('./stocks');
 
-		getStockQuotes(['PFE', 'PHI.ST', 'HM-B.ST', 'ARCC', 'NCC-B.ST', 'INDU-C.ST', 'SHB-B.ST', 'COS.TO', 'CAST.ST'], function(quotes) {
+		getStockQuotes(config.stocks, function(quotes) {
 			var messages = [];
 						
 			for (var index in quotes) {
@@ -413,32 +414,13 @@ function main() {
 
 	function enableStockQuotes() {
 		var schedule = require('node-schedule');
-		var getStockQuotes = require('./stocks');
 
 		var rule = new schedule.RecurrenceRule();
 		rule.minute = [10, 20, 30, 40, 50];
 		rule.hour = [9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
 		
 		schedule.scheduleJob(rule, function() {
-	
-			getStockQuotes(['PFE', 'PHI.ST', 'HM-B.ST', 'ARCC', 'NCC-B.ST', 'INDU-C.ST', 'SHB-B.ST', 'COS.TO', 'CAST.ST'], function(quotes) {
-				var messages = [];
-							
-				for (var index in quotes) {
-					var quote = quotes[index];
-					var text = sprintf('%s %s', quote.symbol, quote.change);
-					
-					var message = {};
-					message.message = text;
-					message.textcolor = 'blue';
-	
-					messages.push(message);
-					console.log(text);
-				}
-				
-				sendMessage('text', messages);
-				
-			});
+			showStockQuotes();
 		});	
 		
 	}
