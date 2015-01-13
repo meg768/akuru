@@ -14,7 +14,7 @@ app.listen(3000, function() {
 	function showStockQuotes() {
 		var getStockQuotes = require('./stocks');
 
-		getStockQuotes(config.stocks, function(quotes) {
+		getStockQuotes(config.stocks.tickers, function(quotes) {
 			var messages = [];
 						
 			for (var index in quotes) {
@@ -29,12 +29,11 @@ app.listen(3000, function() {
 				console.log(text);
 			}
 			
-			//sendMessage('text', messages);
-			console.log(messages);
+			sendMessage('text', messages);
+			//console.log(messages);
 			
 		});
 		
 	}
-
 
 showStockQuotes();

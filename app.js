@@ -390,7 +390,7 @@ function main() {
 	function showStockQuotes() {
 		var getStockQuotes = require('./stocks');
 
-		getStockQuotes(config.stocks, function(quotes) {
+		getStockQuotes(config.stocks.tickers, function(quotes) {
 			var messages = [];
 						
 			for (var index in quotes) {
