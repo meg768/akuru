@@ -392,7 +392,7 @@ function main() {
 		var getStockQuotes = require('./stocks');
 
 		var rule = new schedule.RecurrenceRule();
-		rule.minute = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55];
+		rule.minute = [10, 20, 30, 40, 50];
 		rule.hour = [9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
 		
 		schedule.scheduleJob(rule, function() {
@@ -416,6 +416,45 @@ function main() {
 				
 			});
 		});	
+		
+	}
+
+	function showWeatherForecast() {
+		var getWeatherForecast = require('./weather');
+
+		getWeatherForecast(function(results) {
+		
+			var messages = [];
+		
+			for (var index in results) {
+				var weather = results[index];
+				var text = sprintf('%s %s %dº (%dº)', weather.day, weather.condition, weather.high, weather.low);
+				
+				var message = {};
+				message.message = text;
+				message.textcolor = 'blue';
+
+				messages.push(message);
+			}
+			
+			console.log(messages);
+			sendMessage('text', messages);
+		});
+		
+	}
+
+	function scheduleWeatherForecast() {
+		var schedule = require('node-schedule');
+		var getWeatherForecast = require('./weather');
+
+		var rule = new schedule.RecurrenceRule();
+		rule.minute = [15, 25, 35, 45, 55];
+		rule.hour = [9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
+		
+		schedule.scheduleJob(rule, function() {
+			showWeatherForecast();
+		});	
+		
 		
 	}
 	
@@ -517,12 +556,13 @@ function main() {
 		enableRSS('http://www.di.se/rss', "DI");
 		enableRSS('http://news.google.com/news?pz=1&cf=all&ned=sv_se&hl=sv&topic=h&num=3&output=rss', "Google");
 	
-		//schedulePing();
+		schedulePing();
 		//enableTwitter();
-		enableStockQuotes();
+		//enableStockQuotes();
 		//scheduleAnimations();
 		//enableGoogleTalk();
-	
+		scheduleWeatherForecast();
+		showWeatherForecast();
 		
 		
 	});
