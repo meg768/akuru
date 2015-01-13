@@ -375,7 +375,7 @@ function main() {
 
 	function scheduleNightMode() {
 
-		rule = new schedule.RecurrenceRule();
+		var rule = new schedule.RecurrenceRule();
 		rule.hour = [1];
 
 		schedule.scheduleJob(rule, function() {
@@ -401,7 +401,7 @@ function main() {
 
 	function scheduleDayMode() {
 
-		rule = new schedule.RecurrenceRule();
+		var rule = new schedule.RecurrenceRule();
 		rule.hour = [7];
 
 		schedule.scheduleJob(rule, function() {
