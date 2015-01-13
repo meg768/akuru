@@ -463,7 +463,7 @@ function main() {
 		
 	}
 
-	function enableStockQuotes() {
+	function scheduleStockQuotes() {
 		var schedule = require('node-schedule');
 
 		var rule = new schedule.RecurrenceRule();
@@ -613,14 +613,17 @@ function main() {
 		enableRSS('http://www.sydsvenskan.se/rss.xml', "SDS");
 		enableRSS('http://www.di.se/rss', "DI");
 		enableRSS('http://news.google.com/news?pz=1&cf=all&ned=sv_se&hl=sv&topic=h&num=3&output=rss', "Google");
+
+		enableTwitter();
+		enableGoogleTalk();
 	
-		//schedulePing();
-		//enableTwitter();
-		//enableStockQuotes();
 		//scheduleAnimations();
-		//enableGoogleTalk();
-		//scheduleWeatherForecast();
-		showNightMode();
+		schedulePing();
+		scheduleStockQuotes();
+		scheduleWeatherForecast();
+		scheduleDayMode();
+		scheduleNightMode();
+		
 		
 		
 	});
