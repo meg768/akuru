@@ -374,8 +374,9 @@ function main() {
 	}
 
 	function scheduleNightMode() {
-
+		var schedule = require('node-schedule');
 		var rule = new schedule.RecurrenceRule();
+		
 		rule.hour = [1];
 
 		schedule.scheduleJob(rule, function() {
@@ -400,8 +401,9 @@ function main() {
 	}
 
 	function scheduleDayMode() {
-
+		var schedule = require('node-schedule');
 		var rule = new schedule.RecurrenceRule();
+
 		rule.hour = [7];
 
 		schedule.scheduleJob(rule, function() {
@@ -465,8 +467,8 @@ function main() {
 
 	function scheduleStockQuotes() {
 		var schedule = require('node-schedule');
-
 		var rule = new schedule.RecurrenceRule();
+		
 		rule.minute = [10, 20, 30, 40, 50];
 		rule.hour = [9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
 		
