@@ -398,22 +398,23 @@ function main() {
 		schedule.scheduleJob(rule, function() {
 	
 			getStockQuotes(['PFE', 'PHI.ST', 'HM-B.ST', 'ARCC', 'NCC-B.ST', 'INDU-C.ST', 'SHB-B.ST', 'COS.TO', 'CAST.ST'], function(quotes) {
-
-			var packets = [];
-						
-			for (var index in quotes) {
-				var quote = quotes[index];
-				var text = sprintf('%s %s', quote.symbol, quote.change);
+				var messages = [];
+							
+				for (var index in quotes) {
+					var quote = quotes[index];
+					var text = sprintf('%s %s', quote.symbol, quote.change);
+					
+					var message = {};
+					message.message = text;
+					message.textcolor = 'blue';
+	
+					messages.push(message);
+					console.log(text);
+				}
 				
-				var packet = {};
-				packet.message = text;
-				packet.textcolor = 'blue';
-
-				packets.push(packet);
-				console.log(text);
-			}
-			
-			sendMessage('text', packets);
+				sendMessage('text', messages);
+				
+			});
 		});	
 		
 	}
