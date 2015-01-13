@@ -428,7 +428,7 @@ function main() {
 		
 			for (var index in results) {
 				var weather = results[index];
-				var text = sprintf('%s %s %dº (%dº)', weather.day, weather.condition, weather.high, weather.low);
+				var text = sprintf('%s - %s, %dº (%dº)', weather.day, weather.condition, weather.high, weather.low);
 				
 				var message = {};
 				message.message = text;
@@ -442,6 +442,7 @@ function main() {
 		});
 		
 	}
+	
 
 	function scheduleWeatherForecast() {
 		var schedule = require('node-schedule');
@@ -557,12 +558,11 @@ function main() {
 		enableRSS('http://news.google.com/news?pz=1&cf=all&ned=sv_se&hl=sv&topic=h&num=3&output=rss', "Google");
 	
 		schedulePing();
-		//enableTwitter();
-		//enableStockQuotes();
+		enableTwitter();
+		enableStockQuotes();
 		//scheduleAnimations();
-		//enableGoogleTalk();
+		enableGoogleTalk();
 		scheduleWeatherForecast();
-		showWeatherForecast();
 		
 		
 	});
