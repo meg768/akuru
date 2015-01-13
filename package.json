@@ -9,13 +9,14 @@
     "body-parser": "~1.9.0",
     "express": "^4.4.5",
     "feedsub": "^0.2.8",
+    "hangouts-bot": "~0.1.0",
+    "moment": "^2.9.0",
     "node-schedule": "~0.1.13",
     "pg": "3.4.4",
     "pusher": "~1.0.1",
-    "twit": "~1.1.18",
-    "hangouts-bot": "~0.1.0",
+    "request": "~2.51.0",
     "socket.io": "~1.2.1",
-    "request": "~2.51.0"
+    "twit": "~1.1.18"
   },
   "engines": {
     "node": "0.10.x"

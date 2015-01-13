@@ -388,92 +388,32 @@ function main() {
 	
 
 	function enableStockQuotes() {
-		var rule, schedule = require('node-schedule');
-	
-	
-		function display(text) {
-			var packet = {};
-			packet.message = text;
-			packet.textcolor = 'blue';
-			sendMessage('text', packet);	
-			
-		}
-		function getStockQuotes(symbols, callback) {
-			
-			var request = require('request');
-			var util = require('util');
-			var tickers = '';
-			
-			for (var index in symbols) {
-				if (tickers != '')
-					tickers += ', ';
-					
-				tickers += '"' + symbols[index] + '"';
-			}
-		
-			var url = sprintf('https://query.yahooapis.com/v1/public/yql?q=%s&format=%s&env=%s&callback=%s', encodeURIComponent(sprintf('select * from yahoo.finance.quote where symbol in (%s)', tickers)), 'json', encodeURIComponent('store://datatables.org/alltableswithkeys'), '');
-		
-			request(url, function (error, response, body) {
-				try {
-					if (error)
-						throw error;
-						
-					if (response.statusCode == 200) {
-						var json = JSON.parse(body);
-						var quotes = json.query.results.quote;
-						
-						if (!util.isArray(quotes))
-							quotes = [quotes];
-		
-						// Convert to numbers
-						for (var index in quotes) {
-							var quote = quotes[index];
-							console.log(quote);
-							
-							quote.Change = parseFloat(quote.Change);
-							quote.AverageDailyVolume = parseFloat(quote.AverageDailyVolume);
-							quote.Volume = parseFloat(quote.Volume);
-							quote.LastTradePriceOnly = parseFloat(quote.LastTradePriceOnly);
-						}
-					
-							
-						callback(quotes);				
-					}
-					else
-						throw new Error('Invalid status code');
-				}
-				catch(error) {
-					console.log(error);
-						
-				}
-				
-			});
-		}
-	
-	
-		rule = new schedule.RecurrenceRule();
+		var schedule = require('node-schedule');
+		var getStockQuotes = require('./stocks');
+
+		var rule = new schedule.RecurrenceRule();
 		rule.minute = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55];
 		rule.hour = [9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
 		
 		schedule.scheduleJob(rule, function() {
+	
 			getStockQuotes(['PFE', 'PHI.ST', 'HM-B.ST', 'ARCC', 'NCC-B.ST', 'INDU-C.ST', 'SHB-B.ST', 'COS.TO', 'CAST.ST'], function(quotes) {
-			
+
+			var packets = [];
+						
+			for (var index in quotes) {
+				var quote = quotes[index];
+				var text = sprintf('%s %s', quote.symbol, quote.change);
 				
-				for (var index in quotes) {
-					var quote = quotes[index];
-					var percentPrice = (1 - ((quote.LastTradePriceOnly - quote.Change) / quote.LastTradePriceOnly)) * 100;
-					var percentVolume = 100 * ((quote.Volume / quote.AverageDailyVolume) - 1);
-					var text = '';
-					
-					text += quote.symbol + ' ';;
-					text += percentPrice > 0 ? sprintf('+%.1f%% ', percentPrice) : sprintf('%.1f%% ', percentPrice);
-					text += percentVolume > 0 ? sprintf('(+%.0f%%)', percentVolume) : sprintf('(%.0f%%)', percentVolume);
-					
-					display(text);
-				}
+				var packet = {};
+				packet.message = text;
+				packet.textcolor = 'blue';
+
+				packets.push(packet);
+				console.log(text);
+			}
 			
-				
-			});
+			sendMessage('text', packets);
 		});	
 		
 	}
@@ -576,11 +516,11 @@ function main() {
 		enableRSS('http://www.di.se/rss', "DI");
 		enableRSS('http://news.google.com/news?pz=1&cf=all&ned=sv_se&hl=sv&topic=h&num=3&output=rss', "Google");
 	
-		schedulePing();
-		enableTwitter();
+		//schedulePing();
+		//enableTwitter();
 		enableStockQuotes();
-		scheduleAnimations();
-		enableGoogleTalk();
+		//scheduleAnimations();
+		//enableGoogleTalk();
 	
 		
 		
