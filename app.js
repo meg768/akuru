@@ -13,13 +13,8 @@ function main() {
 	function sendMessage(event, data) {
 
 		try {
-			if (socketIO == undefined)
-				console.log('No sockets');
-			else {
-				console.log('Sending event "%s"', event, data);
-				socketIO.sockets.emit(event, data);
-				
-			}
+			console.log('Sending event "%s"', event, data);
+			socketIO.sockets.emit(event, data);
 		}
 		catch (error) {
 			console.log('Sending event "%s" failed.', event, data);			
