@@ -601,8 +601,8 @@ function main() {
 		var io = require('socket.io')(server);
 		
 		io.on('connection', function(socket) {
-			connected();
 			console.log("Socket IO Connection!");
+			connected();
 		});
 
 		return io;
@@ -610,7 +610,10 @@ function main() {
 	
 	server = startServer();	
 
+	console.log('Starting socket-io...');
+	
 	socketIO = startSocketIO(server, function() {
+	
 		enableRSS('http://www.svd.se/?service=rss&type=latest', "SvD");
 		enableRSS('http://www.sydsvenskan.se/rss.xml', "SDS");
 		enableRSS('http://www.di.se/rss', "DI");
