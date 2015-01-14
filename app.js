@@ -1,6 +1,7 @@
 var config = require('./config.js');
 var http = require("http");
 var sprintf = require('./sprintf');
+
 var socketIO, server;
 
 function main() {
