@@ -161,6 +161,24 @@ function main() {
 		
 	};
 	
+	function XXX(count) {
+		
+		count = Math.max(0, Math.min(60, count));
+		
+		var step    = Math.round(60 / count);
+		var offset  = rand(0, 59);
+		var minutes = [];
+		var minute  = 0;
+		
+		
+		for (var i = 0, minute = 0; i < count i++, minute += step) {
+			minutes.push((minute + offset) % 60);	
+		}
+		
+	}
+
+	
+	
 	
 	function enableRSS(url, feedName) {
 		var feedsub = require('feedsub');
@@ -341,24 +359,6 @@ function main() {
 
 		});		
 
-/*
-		rule = new schedule.RecurrenceRule();
-		rule.hour = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
-		rule.minute = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55];
-
-		schedule.scheduleJob(rule, function() {
-			
-			sendMessage('message', {
-				type: 'settings',
-				defaultAnimation: {
-					command:Math.random() < 0.5 ? './run-clock' : './run-rain',
-					args: ['-d', -1]
-					
-				}
-			});
-
-		});		
-*/
 
 	}
 	
@@ -379,7 +379,8 @@ function main() {
 		var schedule = require('node-schedule');
 		var rule = new schedule.RecurrenceRule();
 		
-		rule.hour = [1];
+		rule.hour = 23;
+		rule.minute = 30;
 
 		schedule.scheduleJob(rule, function() {
 			showNightMode();
@@ -406,7 +407,8 @@ function main() {
 		var schedule = require('node-schedule');
 		var rule = new schedule.RecurrenceRule();
 
-		rule.hour = [7];
+		rule.hour = 7;
+		rule.hour = 30;
 
 		schedule.scheduleJob(rule, function() {
 			showDayMode();
