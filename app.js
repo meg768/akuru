@@ -639,7 +639,7 @@ function main() {
 		var text = {};
 		text.message = sprintf("Klockan är %02d:%02d", now.getHours(), now.getMinutes());
 		text.textcolor = "blue";
-		sendMessage('text', text);	
+		//sendMessage('text', text);	
 	}
 
 
