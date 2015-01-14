@@ -1,6 +1,7 @@
 var config = require('./config.js');
 var http = require("http");
 var sprintf = require('./sprintf');
+
 var socketIO, server;
 
 function main() {
@@ -10,7 +11,7 @@ function main() {
 
 	
 	function sendMessage(event, data) {
-		console.log('sendmessage');
+
 		try {
 			if (socketIO == undefined)
 				console.log('No sockets');
@@ -23,7 +24,6 @@ function main() {
 		catch (error) {
 			console.log('Sending event "%s" failed.', event, data);			
 		}
-		console.log('sent!');
 	}
 	
 	function rand(min, max) {
