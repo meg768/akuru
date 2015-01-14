@@ -10,6 +10,7 @@
     "express": "^4.11.0",
     "feedsub": "^0.2.8",
     "hangouts-bot": "~0.1.0",
+    "merge-descriptors": "0.0.2",
     "moment": "^2.9.0",
     "node-schedule": "~0.1.13",
     "request": "~2.51.0",
