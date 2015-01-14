@@ -160,7 +160,7 @@ function main() {
 		});
 		
 	};
-	
+	/*
 	function XXX(count) {
 		
 		count = Math.max(0, Math.min(60, count));
@@ -176,7 +176,7 @@ function main() {
 		}
 		
 	}
-
+*/
 	
 	
 	
