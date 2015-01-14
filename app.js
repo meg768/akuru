@@ -10,13 +10,20 @@ function main() {
 
 	
 	function sendMessage(event, data) {
+		console.log('sendmessage');
 		try {
-			console.log('Sending event "%s"', event, data);
-			socketIO.sockets.emit(event, data);
+			if (socketIO == undefined)
+				console.log('No sockets');
+			else {
+				console.log('Sending event "%s"', event, data);
+				socketIO.sockets.emit(event, data);
+				
+			}
 		}
 		catch (error) {
 			console.log('Sending event "%s" failed.', event, data);			
 		}
+		console.log('sent!');
 	}
 	
 	function rand(min, max) {
@@ -622,7 +629,7 @@ function main() {
 		enableTwitter();
 		enableGoogleTalk();
 	
-		//scheduleAnimations();
+		scheduleAnimations();
 		schedulePing();
 		scheduleStockQuotes();
 		scheduleWeatherForecast();
@@ -639,7 +646,7 @@ function main() {
 		var text = {};
 		text.message = sprintf("Klockan är %02d:%02d", now.getHours(), now.getMinutes());
 		text.textcolor = "blue";
-		//sendMessage('text', text);	
+		sendMessage('text', text);	
 	}
 
 
