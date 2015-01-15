@@ -614,6 +614,7 @@ function main() {
 		var hangoutsBot = require("hangouts-bot");
 		var bot = new hangoutsBot("golvettippar@gmail.com", "potatismos");
 		
+		console.log('Starting Google Talk...');
 		
 		bot.on('online', function() {
 		
@@ -694,6 +695,6 @@ function main() {
 
 }
 
-//main();
+main();
 
 
