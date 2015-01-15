@@ -12,6 +12,16 @@ app.get('/', function (req, response) {
 	response.send("OK");
 });
 
+function sendMessage(event, data) {
+
+	try {
+		console.log('Sending event "%s"', event, data);
+		io.sockets.emit(event, data);
+	}
+	catch (error) {
+		console.log('Sending event "%s" failed.', event, data);			
+	}
+}
 
 
 function sendText(text, color) {
@@ -68,6 +78,75 @@ function scheduleStockQuotes() {
 }
 
 
+function enableRSS(url, feedName) {
+	var feedsub = require('feedsub');
+	var schedule = require('node-schedule');
+
+	var news = [];
+	
+	var reader = new feedsub(url, {
+	  interval: 7, // check feed every 10 minutes,
+	  lastDate: new Date()
+	});
+	
+	reader.on('item', function(item) {
+		
+		console.log("RSS: ", url, item);
+		
+		if (item.title && item.category && item.pubdate) {
+	
+			news.push({
+				category: item.category, 
+				text: item.title,
+				date: new Date(item.pubdate)
+			});
+			
+			news.sort(function(a, b) {
+				return a.date.valueOf() - b.date.valueOf();
+			});
+		
+			news.splice(0, news.length - 5);		
+		}
+	
+	});
+	
+	reader.start();
+
+	var displayTime = rand(0, 59);
+	
+	var rule = new schedule.RecurrenceRule();		
+	rule.minute = [displayTime, (displayTime + 30) % 60];
+	//rule.hour = [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
+
+	schedule.scheduleJob(rule, function() {
+
+		if (news.length > 0) {
+			console.log("Bringing on the news...");
+			
+			var messages = [];
+			var message = {};
+			var now = new Date();
+			var color = "red";
+			
+			messages.push({
+				message: sprintf("%02d:%02d - RSS - %s ", now.getHours(), now.getMinutes(), feedName),
+				textcolor: color
+			});
+			
+			for (var i = 0; i < news.length; i++) {
+				messages.push({
+					message: sprintf("%s - %s", news[i].category, news[i].text),
+					textcolor: color
+				});
+			}
+			
+			sendMessage('text', messages);	
+			
+		}
+	});
+	
+}
+
 
 io.on('connection', function (socket) {
 
@@ -106,6 +185,11 @@ function enableGoogleTalk() {
 scheduleStockQuotes();
 enableGoogleTalk();
 scheduleStockQuotes();
+	enableRSS('http://www.svd.se/?service=rss&type=latest', "SvD");
+	enableRSS('http://www.sydsvenskan.se/rss.xml', "SDS");
+	enableRSS('http://www.di.se/rss', "DI");
+	enableRSS('http://news.google.com/news?pz=1&cf=all&ned=sv_se&hl=sv&topic=h&num=3&output=rss', "Google");
+
 console.log('OK');
 
 
