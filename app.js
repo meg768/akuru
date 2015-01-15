@@ -3,41 +3,59 @@ var app = require('express')();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 var port = process.env.PORT || 5000;
+var schedule = require('node-schedule');
 
 server.listen(port);
 
-	function sendMessage(event, data) {
-
-		try {
-			console.log('Sending event "%s"', event, data);
-			io.sockets.emit(event, data);
-		}
-		catch (error) {
-			console.log('Sending event "%s" failed.', event, data);			
-		}
-	}
 
 app.get('/', function (req, response) {
-			response.send("OK");
-
+	response.send("OK");
 });
+
+
+
+function sendText(text, color) {
+	
+	if (color == undefined)
+		color = 'red';
+	
+	var msg = {};
+	
+	msg.type = 'text';
+	msg.message = text;
+	msg.textcolor = color;
+	io.sockets.emit('message', msg);
+}
+
 
 io.on('connection', function (socket) {
 
 	var now = new Date();
-	var text = {};
-	text.message = sprintf("Klockan är %02d:%02d", now.getHours(), now.getMinutes());
-	text.textcolor = "blue";
-	sendMessage('text', text);	
-
-  //socket.on('my other event', function (data) {
-    //console.log(data);
-  //});
+	sendText(sprintf("Klockan är %02d:%02d", now.getHours(), now.getMinutes()));
 });
 
 
+function scheduleStockQuotes() {
+	var schedule = require('node-schedule');
+	var rule = new schedule.RecurrenceRule();
+	
+	
+	rule.minute = [];
+	
+	for (var i = 0; i < 60; i++) {
+		rule.minute.push(i);	
+	}
+	rule.hour = [9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
+	
+	schedule.scheduleJob(rule, function() {
+		var now = new Date();
+		sendText(sprintf("Klockan är %02d:%02d", now.getHours(), now.getMinutes()), 'blue');
+	});	
+	
+}
 
-
+scheduleStockQuotes();
+console.log('OK');
 
 
 
@@ -695,6 +713,6 @@ function main() {
 
 }
 
-main();
+//main();
 
 
