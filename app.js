@@ -607,6 +607,7 @@ function main() {
 		
 		io.on('connection', function(socket) {
 			console.log("Socket IO Connection!");
+			console.log(socket);
 			connected();
 		});
 
