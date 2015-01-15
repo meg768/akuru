@@ -30,6 +30,45 @@ function sendText(text, color) {
 }
 
 
+function showStockQuotes() {
+	var getStockQuotes = require('./stocks');
+
+	getStockQuotes(config.stocks.tickers, function(quotes) {
+		var messages = [];
+					
+		for (var index in quotes) {
+			var quote = quotes[index];
+			var text = sprintf('%s %s', quote.symbol, quote.change);
+			
+			var message = {};
+			message.message = text;
+			message.textcolor = parseFloat(quote.change) < 0 ? 'red' : 'blue';
+
+			messages.push(message);
+			console.log(text);
+		}
+		
+		io.sockets.emit('text', messages);
+		
+	});
+	
+}
+
+function scheduleStockQuotes() {
+	var schedule = require('node-schedule');
+	var rule = new schedule.RecurrenceRule();
+	
+	rule.minute = [10, 20, 30, 40, 50];
+	rule.hour = [9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
+	
+	schedule.scheduleJob(rule, function() {
+		showStockQuotes();
+	});	
+	
+}
+
+
+
 io.on('connection', function (socket) {
 
 	var now = new Date();
@@ -63,27 +102,10 @@ function enableGoogleTalk() {
 }
 
 
-function scheduleStockQuotes() {
-	var schedule = require('node-schedule');
-	var rule = new schedule.RecurrenceRule();
-	
-	
-	rule.minute = [];
-	
-	for (var i = 0; i < 60; i++) {
-		rule.minute.push(i);	
-	}
-	rule.hour = [9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
-	
-	schedule.scheduleJob(rule, function() {
-		var now = new Date();
-		sendText(sprintf("Klockan är %02d:%02d", now.getHours(), now.getMinutes()), 'blue');
-	});	
-	
-}
 
 scheduleStockQuotes();
 enableGoogleTalk();
+scheduleStockQuotes();
 console.log('OK');
 
 
