@@ -24,7 +24,11 @@ app.get('/', function (req, response) {
 
 io.on('connection', function (socket) {
 
-		sendMessage('text', {message:'HEJ', textcolor:'red'});	
+	var now = new Date();
+	var text = {};
+	text.message = sprintf("Klockan är %02d:%02d", now.getHours(), now.getMinutes());
+	text.textcolor = "blue";
+	sendMessage('text', text);	
 
   //socket.on('my other event', function (data) {
     //console.log(data);
@@ -43,6 +47,7 @@ var sprintf = require('./sprintf');
 
 var socketIO, server;
 
+socketIO = io;
 
 function main() {
 
@@ -563,7 +568,7 @@ function main() {
 		
 	}
 	
-
+/*
 	function startServer() {
 		var express = require("express");
 		var bodyParser = require('body-parser');
@@ -604,7 +609,7 @@ function main() {
 		return server;
 	}
 
-
+*/
 	function enableGoogleTalk() {
 		var hangoutsBot = require("hangouts-bot");
 		var bot = new hangoutsBot("golvettippar@gmail.com", "potatismos");
@@ -641,7 +646,7 @@ function main() {
 
 		});		
 	}
-	
+/*	
 	function startSocketIO(server, connected) {
 		var io = require('socket.io')(server);
 		
@@ -653,39 +658,37 @@ function main() {
 
 		return io;
 	}
-	
+*/
+
+	enableRSS('http://www.svd.se/?service=rss&type=latest', "SvD");
+	enableRSS('http://www.sydsvenskan.se/rss.xml', "SDS");
+	enableRSS('http://www.di.se/rss', "DI");
+	enableRSS('http://news.google.com/news?pz=1&cf=all&ned=sv_se&hl=sv&topic=h&num=3&output=rss', "Google");
+
+	enableTwitter();
+	enableGoogleTalk();
+
+	scheduleAnimations();
+	schedulePing();
+	scheduleStockQuotes();
+	scheduleWeatherForecast();
+	scheduleDayMode();
+	scheduleNightMode();
+
+/*	
 	server = startServer();	
 
 	console.log('Starting socket-io...');
 	
 	socketIO = startSocketIO(server, function() {
 	
-		enableRSS('http://www.svd.se/?service=rss&type=latest', "SvD");
-		enableRSS('http://www.sydsvenskan.se/rss.xml', "SDS");
-		enableRSS('http://www.di.se/rss', "DI");
-		enableRSS('http://news.google.com/news?pz=1&cf=all&ned=sv_se&hl=sv&topic=h&num=3&output=rss', "Google");
-
-		enableTwitter();
-		enableGoogleTalk();
-	
-		scheduleAnimations();
-		schedulePing();
-		scheduleStockQuotes();
-		scheduleWeatherForecast();
-		scheduleDayMode();
-		scheduleNightMode();
 		
 		
 		
 	});
 	
-
+*/
 	{
-		var now = new Date();
-		var text = {};
-		text.message = sprintf("Klockan är %02d:%02d", now.getHours(), now.getMinutes());
-		text.textcolor = "blue";
-		sendMessage('text', text);	
 	}
 
 
