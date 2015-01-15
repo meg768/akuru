@@ -1,3 +1,42 @@
+
+var app = require('express')();
+var server = require('http').Server(app);
+var io = require('socket.io')(server);
+var port = process.env.PORT || 5000;
+
+server.listen(port);
+
+	function sendMessage(event, data) {
+
+		try {
+			console.log('Sending event "%s"', event, data);
+			io.sockets.emit(event, data);
+		}
+		catch (error) {
+			console.log('Sending event "%s" failed.', event, data);			
+		}
+	}
+
+app.get('/', function (req, response) {
+			response.send("OK");
+
+});
+
+io.on('connection', function (socket) {
+
+		sendMessage('text', {message:'HEJ', textcolor:'red'});	
+
+  //socket.on('my other event', function (data) {
+    //console.log(data);
+  //});
+});
+
+
+
+
+
+
+
 var config = require('./config.js');
 var http = require("http");
 var sprintf = require('./sprintf');
@@ -7,6 +46,7 @@ var socketIO, server;
 
 function main() {
 
+	
 	// Set my time zone
 	process.env.TZ = config.timezone;
 
@@ -651,6 +691,6 @@ function main() {
 
 }
 
-main();
+//main();
 
 
