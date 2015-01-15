@@ -24,6 +24,8 @@ function sendText(text, color) {
 	msg.type = 'text';
 	msg.message = text;
 	msg.textcolor = color;
+
+	console.log('Sending text "%s"', text); 
 	io.sockets.emit('message', msg);
 }
 
@@ -33,6 +35,32 @@ io.on('connection', function (socket) {
 	var now = new Date();
 	sendText(sprintf("Klockan är %02d:%02d", now.getHours(), now.getMinutes()));
 });
+
+function enableGoogleTalk() {
+	var hangoutsBot = require("hangouts-bot");
+	var bot = new hangoutsBot("golvettippar@gmail.com", "potatismos");
+	
+	console.log('Starting Google Talk...');
+	
+	bot.on('online', function() {
+	
+		// Make sure it doesn't time out
+		bot.connection.connection.socket.setTimeout(0);
+		bot.connection.connection.socket.setKeepAlive(true, 10000);
+
+		sendText('Google Talk online...');	
+	});
+	
+	bot.on('message', function(from, message) {
+		var text = {}; 
+
+		message = message.replace(new RegExp('”', 'g'), '"');
+		console.log(from, message);
+		
+		sendText(message);			
+
+	});		
+}
 
 
 function scheduleStockQuotes() {
@@ -55,6 +83,7 @@ function scheduleStockQuotes() {
 }
 
 scheduleStockQuotes();
+enableGoogleTalk();
 console.log('OK');
 
 
