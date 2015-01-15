@@ -79,6 +79,7 @@ function scheduleStockQuotes() {
 
 
 function enableRSS(url, feedName) {
+	return;
 	var feedsub = require('feedsub');
 	var schedule = require('node-schedule');
 
