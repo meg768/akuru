@@ -5,6 +5,9 @@ var io = require('socket.io')(server);
 var port = process.env.PORT || 5000;
 var schedule = require('node-schedule');
 var config = require('./config');
+var random = require('./random');
+
+process.env.TZ = config.timezone;
 
 server.listen(port);
 
@@ -38,6 +41,49 @@ function sendText(text, color) {
 
 	console.log('Sending text "%s"', text); 
 	io.sockets.emit('message', msg);
+}
+
+
+function enableAnimations() {
+	var rule, schedule = require('node-schedule');
+
+	rule = new schedule.RecurrenceRule();
+	rule.minute = random.rand(0, 59, 5);
+	rule.hour = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22];
+	
+	schedule.scheduleJob(rule, function() {
+		sendMessage('message', {
+			type: 'command',
+			name: './run-animation',
+			args: ['-d', 60]
+		});
+	});	
+}
+
+function enablePing() {
+	var schedule = require('node-schedule');
+
+	function ping() {
+	
+		console.log("Pinging...");
+		
+		var options = {};
+		options.host = "akuru.herokuapp.com";
+		options.path = "/";
+		
+		var request = http.request(options, function(response) {
+			
+		});
+		
+		request.end();
+	}
+	
+	var rule = new schedule.RecurrenceRule();
+	rule.minute = [0,15,30,45];
+	
+	schedule.scheduleJob(rule, function() {
+		ping();	
+	});
 }
 
 function enableStockQuotes() {
@@ -112,17 +158,10 @@ function enableGoogleTalk() {
 enableRSS();
 enableGoogleTalk();
 enableStockQuotes();
-console.log('OK');
+enablePing();
+enableAnimations();
 
 
-
-var config = require('./config.js');
-var http = require("http");
-var sprintf = require('./sprintf');
-
-var socketIO, server;
-
-socketIO = io;
 
 function main() {
 
@@ -722,19 +761,7 @@ function main() {
 
 		});		
 	}
-/*	
-	function startSocketIO(server, connected) {
-		var io = require('socket.io')(server);
-		
-		io.on('connection', function(socket) {
-			console.log("Socket IO Connection!");
-			console.log(socket);
-			connected();
-		});
 
-		return io;
-	}
-*/
 
 	enableRSS('http://www.svd.se/?service=rss&type=latest', "SvD");
 	enableRSS('http://www.sydsvenskan.se/rss.xml', "SDS");
@@ -751,25 +778,10 @@ function main() {
 	scheduleDayMode();
 	scheduleNightMode();
 
-/*	
-	server = startServer();	
-
-	console.log('Starting socket-io...');
-	
-	socketIO = startSocketIO(server, function() {
-	
-		
-		
-		
-	});
-	
-*/
-	{
-	}
 
 
 }
 
-//main();
+
 
 
