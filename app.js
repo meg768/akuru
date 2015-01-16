@@ -4,6 +4,7 @@ var server = require('http').Server(app);
 var io = require('socket.io')(server);
 var port = process.env.PORT || 5000;
 var schedule = require('node-schedule');
+var config = require('./config');
 
 server.listen(port);
 
