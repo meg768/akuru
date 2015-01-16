@@ -46,9 +46,9 @@ function sendText(text, color) {
 
 
 function enableAnimations() {
-	var rule, schedule = require('node-schedule');
+	var schedule = require('node-schedule');
 
-	rule = new schedule.RecurrenceRule();
+	var rule = new schedule.RecurrenceRule();
 	rule.minute = random.rand(0, 59, 5);
 	rule.hour = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22];
 	
@@ -62,6 +62,7 @@ function enableAnimations() {
 }
 
 function enablePing() {
+	var http = require('http');
 	var schedule = require('node-schedule');
 
 	function ping() {
