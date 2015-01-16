@@ -6,6 +6,7 @@ var port = process.env.PORT || 5000;
 var schedule = require('node-schedule');
 var config = require('./config');
 var random = require('./random');
+var sprintf = require('./sprintf');
 
 process.env.TZ = config.timezone;
 
