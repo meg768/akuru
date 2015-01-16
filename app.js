@@ -39,44 +39,20 @@ function sendText(text, color) {
 	io.sockets.emit('message', msg);
 }
 
-
-function showStockQuotes() {
-	var getStockQuotes = require('./stocks');
-
-	getStockQuotes(config.stocks.tickers, function(quotes) {
-		var messages = [];
-					
-		for (var index in quotes) {
-			var quote = quotes[index];
-			var text = sprintf('%s %s', quote.symbol, quote.change);
-			
-			var message = {};
-			message.message = text;
-			message.textcolor = parseFloat(quote.change) < 0 ? 'red' : 'blue';
-
-			messages.push(message);
-			console.log(text);
-		}
-		
-		io.sockets.emit('text', messages);
-		
+function enableStockQuotes() {
+	
+	var Quotes = require('./stocks');
+	var quotes = new Quotes(config.stocks.tickers);
+	
+	quotes.on('quote', function(symbol, change) {
+		if (change >= 0)
+			sendText(sprintf('%s +%.2f', symbol, change), 'blue');
+		else
+			sendText(sprintf('%s %0.2f', symbol, change), 'red');
 	});
-	
+			
+	quotes.schedule();
 }
-
-function scheduleStockQuotes() {
-	var schedule = require('node-schedule');
-	var rule = new schedule.RecurrenceRule();
-	
-	rule.minute = [10, 20, 30, 40, 50];
-	rule.hour = [9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
-	
-	schedule.scheduleJob(rule, function() {
-		showStockQuotes();
-	});	
-	
-}
-
 
 function enableRSS() {
 
@@ -134,7 +110,7 @@ function enableGoogleTalk() {
 
 enableRSS();
 enableGoogleTalk();
-scheduleStockQuotes();
+enableStockQuotes();
 console.log('OK');
 
 

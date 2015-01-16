@@ -12,6 +12,26 @@ app.listen(3000, function() {
 });	
 
 */
+function sendText(text, color) {
+	console.log(text, color);
+}
+
+function enableStockQuotes() {
+	
+	var Quotes = require('./stocks');
+	var quotes = new Quotes(config.stocks.tickers);
+	
+	quotes.on('quote', function(symbol, change) {
+		if (change >= 0)
+			sendText(sprintf('%s +%.2f', symbol, change), 'blue');
+		else
+			sendText(sprintf('%s %0.2f', symbol, change), 'red');
+	});
+		
+	quotes.schedule();
+	quotes.fetch();
+}
+
 
 function enableRSS() {
 
@@ -31,4 +51,4 @@ function enableRSS() {
 }
 
 
-enableRSS();
+enableStockQuotes();
