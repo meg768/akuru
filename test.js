@@ -3,6 +3,7 @@ var app = require('express')();
 var sprintf = require('./sprintf');
 var getStockQuotes = require('./stocks');
 var config = require('./config');
+var display = require('./display');
 
 /*
 
@@ -11,29 +12,23 @@ app.listen(3000, function() {
 });	
 
 */
-	function showStockQuotes() {
-		var getStockQuotes = require('./stocks');
 
-		getStockQuotes(config.stocks.tickers, function(quotes) {
-			var messages = [];
-						
-			for (var index in quotes) {
-				var quote = quotes[index];
-				var text = sprintf('%s %s', quote.symbol, quote.change);
-				
-				var message = {};
-				message.message = text;
-				message.textcolor = parseFloat(quote.change) < 0 ? 'red' : 'blue';
+function enableRSS() {
 
-				messages.push(message);
-				console.log(text);
-			}
-			
-			//sendMessage('text', messages);
-			//console.log(messages);
-			
-		});
-		
-	}
+	var RSS = require('./rss');
+	var rss = new RSS();
 
-showStockQuotes();
+	rss.subscribe('SvD', 'http://www.svd.se/?service=rss&type=latest');
+	rss.subscribe('SDS', 'http://www.sydsvenskan.se/rss.xml');
+	rss.subscribe('Di', 'http://www.di.se/rss');
+	rss.subscribe('Google', 'http://news.google.com/news?pz=1&cf=all&ned=sv_se&hl=sv&topic=h&num=3&output=rss');
+	
+	rss.on('feed', function(name, date, category, text) {
+		console.log('FEED', name, date, category, text);
+
+		sendText(sprintf('%s - %s - %s', name, category, text));
+	});
+}
+
+
+enableRSS();

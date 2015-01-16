@@ -7,8 +7,8 @@
     "start": "node app.js"
   },
   "dependencies": {
-    "express": "~4.9.x",
     "body-parser": "~1.10.1",
+    "express": "~4.9.x",
     "feedsub": "~0.2.8",
     "hangouts-bot": "~0.1.0",
     "moment": "~2.9.0",
