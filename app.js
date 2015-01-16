@@ -132,7 +132,7 @@ function enableGoogleTalk() {
 
 
 
-scheduleStockQuotes();
+enableRSS();
 enableGoogleTalk();
 scheduleStockQuotes();
 console.log('OK');
