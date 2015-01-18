@@ -165,7 +165,7 @@ function enableGoogleTalk() {
 
 enableRSS();
 enableGoogleTalk();
-enableStockQuotes();
+enableFinance();
 enablePing();
 enableAnimations();
 
