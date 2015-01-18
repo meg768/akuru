@@ -129,7 +129,7 @@ function enableWeather() {
 	var query = new Weather();
 	
 	query.on('forecast', function(item) {
-		sendText(sprintf('%s -  %s %d°C(%d°C)', item.day, item.condition, item.high, item.low), 'white');
+		sendText(sprintf('%s -  %s %d°C(%d°C)', item.day, item.condition, item.high, item.low), 'blue');
 	});
 	
 	query.fetch();
