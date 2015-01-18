@@ -6,9 +6,24 @@ module.exports = {
 	
 	'server'   : 'akuru.herokuapp.com',
 	
-	'stocks'   : {
-		'tickers' : ['T', 'PFE', 'PHI.ST', 'HM-B.ST', 'ARCC', 'NCC-B.ST', 'INDU-C.ST', 'SHB-B.ST', 'COS.TO', 'CAST.ST']
-	},
+	'stocks'   : [
+		{ 'name':'AT&T', 'symbol':'T' },
+		{ 'name':'Ares Capital', 'symbol':'ARCC' },
+		{ 'name':'Castellum', 'symbol':'CAST.ST' },
+		{ 'name':'H&M', 'symbol':'HM-B.ST' },
+		{ 'name':'NCC', 'symbol':'NCC-B.ST' },
+		{ 'name':'Industrivärlden', 'symbol':'INDU-C.ST' },
+		{ 'name':'Pfizer', 'symbol':'PFE' },
+		{ 'name':'SHB', 'symbol':'SHB-B.ST' },
+		{ 'name':'PHI',  'symbol':'PHI.ST' }
+	],
+	
+	'rates' : [
+		{ 'name':'USD/SEK', 'symbol':'USDSEK' },
+		{ 'name':'EUR/SEK', 'symbol':'EURSEK' }
+	],
+
+	
 	
 	'twitter'  : {
 		'consumer_key'        : 'RMvVK1wDXgftuFqVwMZA1OmEG',

@@ -1,7 +1,6 @@
 
 var app = require('express')();
 var sprintf = require('./sprintf');
-var getStockQuotes = require('./stocks');
 var config = require('./config');
 var display = require('./display');
 
@@ -16,20 +15,24 @@ function sendText(text, color) {
 	console.log(text, color);
 }
 
-function enableStockQuotes() {
+function enableFinance() {
 	
-	var Quotes = require('./stocks');
-	var quotes = new Quotes(config.stocks.tickers);
+	var Finance = require('./finance');
+	var query = new Finance();
 	
-	quotes.on('quote', function(symbol, change) {
+	query.on('quote', function(name, symbol, change) {
 		if (change >= 0)
-			sendText(sprintf('%s +%.2f', symbol, change), 'blue');
+			sendText(sprintf('%s +%.2f', name, change), 'blue');
 		else
-			sendText(sprintf('%s %0.2f', symbol, change), 'red');
+			sendText(sprintf('%s %0.2f', name, change), 'red');
+	});
+
+	query.on('rate', function(name, symbol, value) {
+		sendText(sprintf('%s %.2f', name, value), 'white');
 	});
 		
-	quotes.schedule();
-	quotes.fetch();
+	query.schedule();
+	query.fetch();
 }
 
 
@@ -51,4 +54,4 @@ function enableRSS() {
 }
 
 
-enableStockQuotes();
+enableFinance();
