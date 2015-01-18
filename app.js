@@ -163,6 +163,7 @@ io.on('connection', function (socket) {
 });
 
 
+
 function enableGoogleTalk() {
 	var hangoutsBot = require("hangouts-bot");
 	var bot = new hangoutsBot("golvettippar@gmail.com", "potatismos");
@@ -179,13 +180,24 @@ function enableGoogleTalk() {
 	});
 	
 	bot.on('message', function(from, message) {
-		var text = {}; 
 
-		message = message.replace(new RegExp('"', 'g'), '”');
-		console.log(from, message);
+		message = message.replace(new RegExp('”', 'g'), '"');
 		
-		sendText(message);			
-		bot.sendMessage(from, sprintf('OK, %s', message));
+		try {
+			sendMessage('message', JSON.parse(message));			
+		}
+		catch (error) {
+			message = message.replace(new RegExp('"', 'g'), '”');
+	
+			var text = {}; 
+	
+			console.log(from, message);
+			
+			sendText(message);			
+			bot.sendMessage(from, sprintf('OK, %s', message));
+			
+		}
+
 
 	});		
 }
