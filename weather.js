@@ -127,7 +127,7 @@ module.exports = function() {
 	self.schedule = function() {
 		var rule = new schedule.RecurrenceRule();		
 		
-		rule.minute = new schedule.Range(0, 59, 1);
+		rule.minute = new schedule.Range(0, 59, 20);
 		rule.hour   = new schedule.Range(7, 23);
 	
 		var job = schedule.scheduleJob(rule, function() {
