@@ -45,7 +45,7 @@ module.exports = function() {
 			21:'haze',
 			22:'rökigt(!)',
 			23:'blustery',
-			24:'windy',
+			24:'blåsigt',
 			25:'kallt',
 			26:'molnigt',
 			27:'mestadels moln',
@@ -56,16 +56,16 @@ module.exports = function() {
 			32:'soligt',
 			33:'uppehåll',
 			34:'uppehåll',
-			35:'regn/hagel',
+			35:'regn och hagel',
 			36:'varmt',
 			37:'isolated thunderstorms',
 			38:'scattered thunderstorms',
 			39:'scattered thunderstorms',
-			40:'scattered showers',
-			41:'heavy snow',
+			40:'delvis regn',
+			41:'mycket snöigt',
 			42:'scattered snow showers',
 			43:'mycket snö',
-			44:'partly cloudy',
+			44:'delvis molnigt',
 			45:'regnigt',
 			46:'snöigt',
 			47:'delvis regn',
@@ -127,7 +127,7 @@ module.exports = function() {
 	self.schedule = function() {
 		var rule = new schedule.RecurrenceRule();		
 		
-		rule.minute = new schedule.Range(0, 59, 20);
+		rule.minute = new schedule.Range(0, 59, 1);
 		rule.hour   = new schedule.Range(7, 23);
 	
 		var job = schedule.scheduleJob(rule, function() {
