@@ -45,6 +45,19 @@ function sendText(text, color) {
 }
 
 
+function enableWeather() {
+	var Weather = require('./weather');
+	var query = new Weather();
+	
+	query.on('forecast', function(item) {
+		sendText(sprintf('%s -  %s %d°C(%d°C)', item.day, item.condition, item.high, item.low), 'blue');
+	});
+	
+	query.fetch();
+	query.schedule();
+	
+}
+
 function enableAnimations() {
 	var schedule = require('node-schedule');
 
@@ -106,6 +119,22 @@ function enableFinance() {
 	});
 		
 	query.schedule();
+}
+
+
+
+
+function enableWeather() {
+	var Weather = require('./weather');
+	var query = new Weather();
+	
+	query.on('forecast', function(item) {
+		sendText(sprintf('%s -  %s %d°C(%d°C)', item.day, item.condition, item.high, item.low), 'white');
+	});
+	
+	query.fetch();
+	query.schedule();
+	
 }
 
 

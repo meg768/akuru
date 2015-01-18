@@ -5,7 +5,7 @@ var events   = require('events');
 var config   = require('./config');
 var random   = require('./random');
 
-module.exports = function(symbols) {
+module.exports = function() {
 
 	var self = this;
 

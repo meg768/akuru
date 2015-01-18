@@ -4,15 +4,23 @@ var sprintf = require('./sprintf');
 var config = require('./config');
 var display = require('./display');
 
-/*
 
-app.listen(3000, function() {
-	console.log("Node app is running at localhost:" + 3000);
-});	
-
-*/
 function sendText(text, color) {
 	console.log(text, color);
+}
+
+
+function enableWeather() {
+	var Weather = require('./weather');
+	var query = new Weather();
+	
+	query.on('forecast', function(item) {
+		sendText(sprintf('%s -  %s %d°C(%d°C)', item.day, item.condition, item.high, item.low), 'blue');
+	});
+	
+	query.fetch();
+	query.schedule();
+	
 }
 
 function enableFinance() {
@@ -54,4 +62,4 @@ function enableRSS() {
 }
 
 
-enableFinance();
+enableWeather();
